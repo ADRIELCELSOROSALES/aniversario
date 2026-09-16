@@ -4,6 +4,47 @@
    ============================================================ */
 
 import { PAREJA, HISTORIA } from './historia.js';
+import { Cielo } from './cielo.js';
+
+/* una flor distinta por estación, generada en SVG */
+const RAMAS = {
+  simple: `      <svg viewBox="-12 -16 444 84" aria-hidden="true">
+        <path class="t" d="M4 52 C70 52 96 40 140 34 C190 27 240 33 300 26 C348 20 388 16 416 14"/>
+        <path class="t" d="M120 36 C112 26 116 16 126 12"/>
+        <path class="t" d="M232 30 C226 20 230 10 240 7"/>
+        <path class="t" d="M330 22 C326 13 332 5 342 3"/>
+        <path class="t" d="M70 47 C66 42 64 38 66 50"/>
+        <path class="t" d="M190 32 C186 27 184 24 188 30"/>
+        <g class="flores">
+          <g class="flor" transform="translate(126,12) scale(1.15)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>\n          <g class="flor" transform="translate(240,7) scale(1.0)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>\n          <g class="flor" transform="translate(342,3) scale(0.92)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>\n          <g class="flor" transform="translate(66,50) scale(0.72)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>\n          <g class="flor" transform="translate(188,30) scale(0.68)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>\n          <g class="flor" transform="translate(292,26) scale(0.78)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>\n          <g class="flor" transform="translate(392,15) scale(0.62)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>
+        </g>
+      </svg>`,
+  girasol: `      <svg viewBox="-12 -16 444 84" aria-hidden="true">
+        <path class="t" d="M4 52 C70 52 96 40 140 34 C190 27 240 33 300 26 C348 20 388 16 416 14"/>
+        <path class="t" d="M120 36 C112 26 116 16 126 12"/>
+        <path class="t" d="M232 30 C226 20 230 10 240 7"/>
+        <path class="t" d="M330 22 C326 13 332 5 342 3"/>
+        <path class="t" d="M70 47 C66 42 64 38 66 50"/>
+        <path class="t" d="M190 32 C186 27 184 24 188 30"/>
+        <g class="flores">
+          <g class="flor" transform="translate(126,12) scale(1.15)"><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(30)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(60)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(90)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(120)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(150)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(180)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(210)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(240)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(270)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(300)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(330)"/><circle class="c" cx="0" cy="0" r="3.1"/></g>\n          <g class="flor" transform="translate(240,7) scale(1.0)"><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(30)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(60)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(90)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(120)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(150)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(180)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(210)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(240)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(270)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(300)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(330)"/><circle class="c" cx="0" cy="0" r="3.1"/></g>\n          <g class="flor" transform="translate(342,3) scale(0.92)"><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(30)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(60)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(90)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(120)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(150)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(180)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(210)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(240)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(270)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(300)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(330)"/><circle class="c" cx="0" cy="0" r="3.1"/></g>\n          <g class="flor" transform="translate(66,50) scale(0.72)"><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(30)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(60)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(90)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(120)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(150)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(180)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(210)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(240)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(270)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(300)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(330)"/><circle class="c" cx="0" cy="0" r="3.1"/></g>\n          <g class="flor" transform="translate(188,30) scale(0.68)"><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(30)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(60)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(90)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(120)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(150)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(180)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(210)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(240)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(270)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(300)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(330)"/><circle class="c" cx="0" cy="0" r="3.1"/></g>\n          <g class="flor" transform="translate(292,26) scale(0.78)"><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(30)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(60)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(90)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(120)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(150)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(180)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(210)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(240)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(270)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(300)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(330)"/><circle class="c" cx="0" cy="0" r="3.1"/></g>\n          <g class="flor" transform="translate(392,15) scale(0.62)"><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(30)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(60)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(90)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(120)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(150)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(180)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(210)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(240)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(270)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(300)"/><ellipse class="p" cx="0" cy="-6.4" rx="1.5" ry="4.4" transform="rotate(330)"/><circle class="c" cx="0" cy="0" r="3.1"/></g>
+        </g>
+      </svg>`,
+  rosa: `      <svg viewBox="-12 -16 444 84" aria-hidden="true">
+        <path class="t" d="M4 52 C70 52 96 40 140 34 C190 27 240 33 300 26 C348 20 388 16 416 14"/>
+        <path class="t" d="M120 36 C112 26 116 16 126 12"/>
+        <path class="t" d="M232 30 C226 20 230 10 240 7"/>
+        <path class="t" d="M330 22 C326 13 332 5 342 3"/>
+        <path class="t" d="M70 47 C66 42 64 38 66 50"/>
+        <path class="t" d="M190 32 C186 27 184 24 188 30"/>
+        <g class="flores">
+          <g class="flor" transform="translate(126,12) scale(1.15)"><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(288)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(36)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(108)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(180)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(252)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(324)"/><circle class="c" cx="0" cy="0" r="1.6"/></g>\n          <g class="flor" transform="translate(240,7) scale(1.0)"><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(288)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(36)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(108)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(180)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(252)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(324)"/><circle class="c" cx="0" cy="0" r="1.6"/></g>\n          <g class="flor" transform="translate(342,3) scale(0.92)"><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(288)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(36)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(108)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(180)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(252)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(324)"/><circle class="c" cx="0" cy="0" r="1.6"/></g>\n          <g class="flor" transform="translate(66,50) scale(0.72)"><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(288)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(36)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(108)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(180)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(252)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(324)"/><circle class="c" cx="0" cy="0" r="1.6"/></g>\n          <g class="flor" transform="translate(188,30) scale(0.68)"><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(288)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(36)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(108)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(180)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(252)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(324)"/><circle class="c" cx="0" cy="0" r="1.6"/></g>\n          <g class="flor" transform="translate(292,26) scale(0.78)"><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(288)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(36)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(108)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(180)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(252)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(324)"/><circle class="c" cx="0" cy="0" r="1.6"/></g>\n          <g class="flor" transform="translate(392,15) scale(0.62)"><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.4" rx="3.4" ry="4.9" transform="rotate(288)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(36)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(108)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(180)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(252)"/><ellipse class="p p2" cx="0" cy="-3.1" rx="2.3" ry="3.3" transform="rotate(324)"/><circle class="c" cx="0" cy="0" r="1.6"/></g>
+        </g>
+      </svg>`,
+};
+
+const FLOR_DE = { primavera: 'simple', verano: 'girasol', otono: 'rosa', 'invierno-calido': 'simple' };
+
 
 /* ---- placeholder: se dibuja solo si la foto todavía no existe ---- */
 const TINTES = {
@@ -106,27 +147,12 @@ function escenaEstacion(d) {
   if (d.subtitulo) cab.appendChild(el('p', 'escena__subtitulo revelar', d.subtitulo));
   if (d.fecha) cab.appendChild(el('span', 'escena__fecha revelar', d.fecha));
   s.appendChild(cab);
-  if (d.estacion === 'primavera') {
+  if (d.flor) {
     const rama = document.createElement('div');
     rama.className = 'rama revelar';
-    rama.innerHTML = `
-      <svg viewBox="-10 -14 440 80" aria-hidden="true">
-        <path class="t" d="M4 52 C70 52 96 40 140 34 C190 27 240 33 300 26 C348 20 388 16 416 14"/>
-        <path class="t" d="M120 36 C112 26 116 16 126 12"/>
-        <path class="t" d="M232 30 C226 20 230 10 240 7"/>
-        <path class="t" d="M330 22 C326 13 332 5 342 3"/>
-        <path class="t" d="M70 47 C66 42 64 38 66 50"/>
-        <path class="t" d="M190 32 C186 27 184 24 188 30"/>
-        <g class="flores">
-          <g class="flor" transform="translate(126,12) scale(1.15)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>
-          <g class="flor" transform="translate(240,7) scale(1.0)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>
-          <g class="flor" transform="translate(342,3) scale(0.92)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>
-          <g class="flor" transform="translate(66,50) scale(0.72)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>
-          <g class="flor" transform="translate(188,30) scale(0.68)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>
-          <g class="flor" transform="translate(292,26) scale(0.78)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>
-          <g class="flor" transform="translate(392,15) scale(0.62)"><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(0)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(72)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(144)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(216)"/><ellipse class="p" cx="0" cy="-5.2" rx="3" ry="5.2" transform="rotate(288)"/><circle class="c" cx="0" cy="0" r="1.9"/></g>
-        </g>
-      </svg>`;
+    rama.innerHTML = RAMAS[FLOR_DE[d.estacion] || 'simple'];
+    const pie = el('span', 'rama__pie', d.flor);
+    rama.appendChild(pie);
     s.appendChild(rama);
   }
 
@@ -221,17 +247,71 @@ function escenaFinal(d) {
   return s;
 }
 
+/* ---- la noche de Traslasierras: el cielo se dibuja solo ---- */
+function escenaEstrellas(d) {
+  const s = el('section', 'escena estrellas');
+  s.id = d.id;
+  s.dataset.estacion = d.estacion;
+
+  const lienzo = document.createElement('canvas');
+  lienzo.className = 'estrellas__cielo';
+  lienzo.setAttribute('aria-hidden', 'true');
+  s.appendChild(lienzo);
+
+  const cont = el('div', 'estrellas__texto');
+  if (d.fecha) cont.appendChild(el('span', 'escena__fecha revelar', d.fecha));
+  cont.appendChild(el('h2', 'estrellas__titulo revelar', d.titulo));
+  if (d.entrada) cont.appendChild(el('p', 'estrellas__parrafo revelar', d.entrada));
+
+  const m = (d.media || [])[0];
+  const marco = crearMedia(m, d.estacion, true);
+  if (marco) { marco.classList.add('revelar'); cont.appendChild(marco); }
+
+  s.appendChild(cont);
+  s._cielo = lienzo;
+  return s;
+}
+
+/* ---- el regalo (escena opcional) ---- */
+function escenaRegalo(d) {
+  const s = el('section', 'escena umbral regalo');
+  s.id = d.id;
+  s.dataset.estacion = d.estacion;
+
+  const cont = el('div');
+  if (d.fecha) cont.appendChild(el('span', 'umbral__fecha revelar', d.fecha));
+  cont.appendChild(el('h2', 'umbral__titulo revelar', d.titulo));
+  if (d.entrada) cont.appendChild(el('p', 'umbral__texto revelar', d.entrada));
+
+  const m = (d.media || [])[0];
+  const marco = crearMedia(m, d.estacion, true);
+  if (marco) { marco.classList.add('revelar'); cont.appendChild(marco); }
+
+  s.appendChild(cont);
+  return s;
+}
+
 /* ---- arma todo el documento ---- */
 export function construir(contenedor) {
   const frag = document.createDocumentFragment();
+  const cielos = [];
+
   HISTORIA.forEach((d) => {
+    if (d.oculta) return;   // escenas apagadas desde historia.js
     let s;
     if (d.estacion === 'portada') s = escenaPortada(d);
     else if (d.estacion === 'umbral') s = escenaUmbral(d);
+    else if (d.estacion === 'estrellas') s = escenaEstrellas(d);
+    else if (d.estacion === 'regalo') s = escenaRegalo(d);
     else if (d.estacion === 'final') s = escenaFinal(d);
     else s = escenaEstacion(d);
+    if (s._cielo) cielos.push(s._cielo);
     frag.appendChild(s);
   });
   contenedor.appendChild(frag);
+
+  // el cielo necesita que la sección ya tenga tamaño
+  requestAnimationFrame(() => cielos.forEach((c) => new Cielo(c)));
+
   return [...contenedor.querySelectorAll('.escena')];
 }

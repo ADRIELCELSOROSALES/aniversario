@@ -17,12 +17,19 @@ Copiá tus fotos en la carpeta `img/` con **exactamente** estos nombres:
 
 | Archivo | Dónde aparece |
 |---|---|
-| `invierno-01.jpg`, `invierno-02.jpg` | Invierno 2025, conociéndonos |
-| `el-dia.jpg` | El 20 de septiembre |
-| `primavera-01.jpg` … `primavera-03.jpg` | Primavera de novios |
-| `verano-01.jpg` … `verano-03.jpg` | Las vacaciones |
-| `otono-01.jpg`, `otono-02.jpg` | Otoño |
-| `invierno-2026-01.jpg`, `invierno-2026-02.jpg` | Este invierno |
+| `01-mesa-dulce.jpg` | La mesa dulce y salada de fines de junio |
+| `02-pijamada.jpg` | Los pijamas a cuadros, julio |
+| `03-mandarinas.jpg` | Mandarinas al sol en la facultad |
+| `04-20-septiembre.jpg` | El 20 de septiembre de 2025 |
+| `05-primavera.jpg` | La primavera de novios |
+| `06-navidad.jpg` | Navidad en la casa de ella |
+| `07-traslasierras.jpg` | Villa Dolores / Traslasierras |
+| `08-estrellas.jpg` | La noche de las estrellas *(opcional: el cielo ya se dibuja solo)* |
+| `09-parque.jpg` | Mates y ajedrez en el parque |
+| `10-cumple-eri.jpg` | El cumpleaños de Eri |
+| `11-cumple-adriel.jpg` | Tu cumpleaños, 30 de mayo |
+| `12-invierno.jpg` | Este invierno |
+| `13-nosotros.jpg` | Nosotros ahora |
 | `final.jpg` | El cierre |
 
 Mientras un archivo no exista se dibuja solo un cartel que dice qué foto va ahí.
@@ -37,6 +44,20 @@ tardar en cargar en el celu. Desde la Terminal, con todas las fotos ya en `img/`
 ```bash
 sips -Z 1600 img/*.jpg
 ```
+
+## La escena del regalo está apagada
+
+Al final de `js/historia.js` hay una escena llamada **"Mirá para arriba"** que le revela
+el regalo de la avioneta. Está **desactivada**. Si querés que la web se lo cuente,
+borrá la línea `oculta: true,` de esa escena. Si preferís decírselo vos en persona,
+dejala como está.
+
+## La noche de las estrellas
+
+El cielo de esa escena **no es una foto**: son estrellas calculadas una por una, con la
+Vía Láctea cruzando en diagonal y estrellas fugaces cada tanto. Si tenés una foto real
+de esa noche en Traslasierras, ponela como `img/08-estrellas.jpg` y va a aparecer encima
+del cielo dibujado.
 
 ## Poner la música
 

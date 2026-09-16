@@ -36,6 +36,8 @@ button { font: inherit; color: inherit; }
 [data-estacion="verano"]          { --bg:#fff7ea; --bg-2:#ffeacd; --texto:#33271a; --tenue:#8a7357; --acento:#e0873a; }
 [data-estacion="otono"]           { --bg:#1e120d; --bg-2:#3b2214; --texto:#f6e5d3; --tenue:#b08d6f; --acento:#dd8f43; }
 [data-estacion="invierno-calido"] { --bg:#08111d; --bg-2:#152438; --texto:#eaf2fa; --tenue:#8aa4bd; --acento:#f0c891; }
+[data-estacion="estrellas"]       { --bg:#03060f; --bg-2:#0a1024; --texto:#e8ecfa; --tenue:#8e97bd; --acento:#cbd6ff; }
+[data-estacion="regalo"]          { --bg:#061018; --bg-2:#0f2436; --texto:#eaf4fb; --tenue:#8fabc0; --acento:#9fd8e8; }
 [data-estacion="final"]           { --bg:#0f0a14; --bg-2:#2a1c2b; --texto:#fbf2e4; --tenue:#b09a8a; --acento:#e9c283; }
 
 /* ---------- base ---------- */
@@ -265,7 +267,53 @@ h1, h2, .cita, .carta p {
 .rama svg { width: 100%; height: auto; overflow: visible; }
 .rama .t { fill: none; stroke: var(--acento); stroke-width: 1.4; stroke-linecap: round; opacity: .7; }
 .rama .flor .p { fill: var(--acento); fill-opacity: .16; stroke: var(--acento); stroke-width: 1.15; }
-.rama .flor .c { fill: var(--acento); fill-opacity: .55; stroke: none; }
+.rama .flor .p2 { fill-opacity: .3; }
+.rama .flor .c { fill: var(--acento); fill-opacity: .7; stroke: none; }
+
+/* ---------- la noche de las estrellas ---------- */
+.estrellas {
+  position: relative;
+  align-items: center; text-align: center;
+  overflow: hidden;
+  min-height: 100svh;
+}
+.estrellas__cielo {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+.estrellas__texto { position: relative; z-index: 1; max-width: 46rem; margin-inline: auto; }
+.estrellas__titulo {
+  margin-top: 1rem;
+  font-family: var(--serif); font-weight: 200;
+  font-size: clamp(2.4rem, 1.4rem + 5vw, 5rem);
+  line-height: 1.04; letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.estrellas__parrafo {
+  margin: clamp(2rem, 6vh, 3.2rem) auto 0;
+  max-width: 36ch;
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 1rem + 1vw, 1.8rem);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.estrellas .marco { margin: clamp(2.5rem, 7vh, 4rem) auto 0; max-width: 34rem; }
+
+/* el horizonte serrano, apenas insinuado */
+.estrellas::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 22%;
+  z-index: 0; pointer-events: none;
+  background: linear-gradient(to top, var(--bg) 18%, transparent);
+}
+
+/* ---------- pie de la rama florecida ---------- */
+.rama__pie {
+  display: block; margin-top: .4rem;
+  color: var(--acento);
+  font-size: .68rem; letter-spacing: .26em; text-transform: uppercase;
+  opacity: .8;
+}
 
 /* ---------- final / carta ---------- */
 .final { align-items: center; text-align: center; }

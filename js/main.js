@@ -153,12 +153,13 @@ gsap.set(arco, { strokeDasharray: LARGO, strokeDashoffset: LARGO });
 // a qué cuarto de la rueda pertenece cada escena
 const CUARTO = {
   'invierno-frio': 0, umbral: 0,
-  primavera: 1, verano: 2, otono: 3,
-  'invierno-calido': 0, final: 0, portada: -1,
+  primavera: 1, verano: 2, estrellas: 2, otono: 3,
+  'invierno-calido': 0, final: 0, regalo: 0, portada: -1,
 };
 const NOMBRE = {
-  'invierno-frio': 'inv', umbral: '20·9', primavera: 'pri',
-  verano: 'ver', otono: 'oto', 'invierno-calido': 'inv', final: '1 año', portada: '',
+  'invierno-frio': 'inv', umbral: '20·9', primavera: 'pri', verano: 'ver',
+  estrellas: '✦', otono: 'oto', 'invierno-calido': 'inv',
+  final: '1 año', regalo: '✦', portada: '',
 };
 
 ScrollTrigger.create({

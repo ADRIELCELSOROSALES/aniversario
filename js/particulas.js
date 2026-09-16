@@ -48,6 +48,18 @@ const PERFILES = {
     tam: [1.4, 4.6], vel: [0.22, 0.8], deriva: 0.6,
     giro: 0.008, opacidad: [0.28, 0.9], sube: false, brillo: 0.55,
   },
+  estrellas: {
+    cantidad: 0, forma: 'polvo',
+    colores: ['#ffffff'],
+    tam: [0.5, 1], vel: [0.02, 0.06], deriva: 0.1,
+    giro: 0.001, opacidad: [0, 0], sube: false, brillo: 0,
+  },
+  regalo: {
+    cantidad: 60, forma: 'luz',
+    colores: ['#bfe6f5', '#ffffff', '#8fc9e0'],
+    tam: [1, 3.5], vel: [0.1, 0.35], deriva: 0.8,
+    giro: 0.006, opacidad: [0.2, 0.7], sube: true, brillo: 1,
+  },
   final: {
     cantidad: 95, forma: 'luz',
     colores: ['#f0c98a', '#fff0d4', '#e0a7c0', '#cdb6e8'],
