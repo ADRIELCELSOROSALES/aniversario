@@ -111,7 +111,7 @@ document.querySelectorAll('.brote, .rama svg').forEach((dibujo) => {
   if (reducirMovimiento) return;
 
   // 1. los tallos se dibujan como con una birome
-  const trazos = dibujo.querySelectorAll('path, circle:not(.c)');
+  const trazos = dibujo.querySelectorAll(':scope > path, :scope > circle');
   trazos.forEach((t) => {
     const largo = t.getTotalLength ? t.getTotalLength() : 200;
     gsap.set(t, { strokeDasharray: largo, strokeDashoffset: largo });
@@ -130,14 +130,17 @@ document.querySelectorAll('.brote, .rama svg').forEach((dibujo) => {
   // 2. y después brotan las flores
   const flores = dibujo.querySelectorAll('.flor');
   if (flores.length) {
-    gsap.set(flores, { transformOrigin: '50% 50%', scale: 0, opacity: 0 });
-    linea.to(flores, {
-      scale: 1,
-      opacity: 1,
-      duration: 0.9,
-      ease: 'back.out(2.2)',
-      stagger: { each: 0.11, from: 'random' },
-    }, '-=0.5');
+    gsap.set(flores, { transformOrigin: '50% 50%' });
+    linea.fromTo(flores,
+      { scale: 0, opacity: 0 },
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 0.9,
+        ease: 'back.out(2.2)',
+        stagger: { each: 0.11, from: 'random' },
+        immediateRender: false,   // clave: no las esconde hasta que le toca
+      }, '-=0.5');
   }
 });
 
@@ -283,7 +286,35 @@ if (regalo) {
 }
 
 /* ---------------------------------------------------------
-   10 · detalles finales
+   10 · red de seguridad
+   Si por un recálculo de posiciones (por ejemplo al cargar las
+   fotos) algún disparador no llega a ejecutarse, esto se asegura
+   de que nada quede invisible en pantalla.
+   --------------------------------------------------------- */
+const rescate = new IntersectionObserver((entradas) => {
+  entradas.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const el = e.target;
+    setTimeout(() => {
+      if (!el.isConnected) return;
+      if (parseFloat(getComputedStyle(el).opacity) < 0.05) {
+        gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+      }
+      const flores = el.querySelectorAll?.('.flor') || [];
+      flores.forEach((f) => {
+        if (parseFloat(getComputedStyle(f).opacity) < 0.05) {
+          gsap.to(f, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' });
+        }
+      });
+    }, 1600);
+    rescate.unobserve(el);
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.revelar, .rama').forEach((el) => rescate.observe(el));
+
+/* ---------------------------------------------------------
+   11 · detalles finales
    --------------------------------------------------------- */
 // arrancar siempre arriba, aunque el navegador recuerde la posición
 history.scrollRestoration = 'manual';
@@ -292,7 +323,16 @@ addEventListener('load', () => {
   if (lenis) lenis.scrollTo(0, { immediate: true });
 });
 
-// las fotos cambian de tamaño el layout: recalcular cuando cargan
-document.querySelectorAll('.marco img').forEach((img) => {
-  img.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+// las fotos cambian el alto de la página: recalcular a medida que cargan,
+// y una vez más cuando ya no queda ninguna pendiente
+const fotos = [...document.querySelectorAll('.marco img')];
+let pendientes = fotos.filter((i) => !i.complete).length;
+fotos.forEach((img) => {
+  if (img.complete) return;
+  const listo = () => {
+    ScrollTrigger.refresh();
+    if (--pendientes <= 0) setTimeout(() => ScrollTrigger.refresh(), 200);
+  };
+  img.addEventListener('load', listo, { once: true });
+  img.addEventListener('error', listo, { once: true });
 });

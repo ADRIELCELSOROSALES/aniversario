@@ -50,11 +50,11 @@ const HISTORIA = [
         media: null,
       },
       {
-        texto: 'A fines de junio te conocí en persona. Te recibí con una mesa dulce y salada que me llevó horas armar. Te sorprendiste de que hubiera cocinado todo eso. Yo no lo dije en ese momento, pero con la comida te atrapé.',
+        texto: 'A fines de junio te conocí en persona. Te recibí con una mesa dulce y salada bastante elaborada. Te sorprendiste de que hubiera preparado todo eso. Nunca aclaré que en realidad lo había comprado, pero con la comida te atrapé igual.',
         media: { src: 'img/01-mesa-dulce.jpg', alt: 'La mesa dulce y salada de la primera vez' },
       },
       {
-        texto: 'Nos quedamos hablando un montón de horas en mi antiguo departamento. Fue una conexión muy profunda, de esas que no se fuerzan. No pasó nada más esa noche, y me quedé con muchísimas ganas de conocerte más.',
+        texto: 'Nos quedamos hablando un montón de horas en mi antiguo departamento. Fue una conexión muy profunda, de esas que no se fuerzan. No pasó nada más esa tarde, y me quedé con muchísimas ganas de conocerte más.',
         media: null,
       },
       {
@@ -62,7 +62,7 @@ const HISTORIA = [
         media: { src: 'img/02-pijamada.jpg', alt: 'Los pijamas a cuadros' },
       },
       {
-        texto: 'Vimos Barbie, tomamos unas copas de vino, nos reímos muchísimo. Una cosa llevó a la otra y te besé. Esa noche dormimos juntos por primera vez, abrazados, y a la mañana te fuiste con todo dado vuelta acá adentro.',
+        texto: 'Vimos Barbie, tomamos unas copas de vino, nos reímos muchísimo. Una cosa llevó a la otra y te besé. Esa noche dormimos juntos por primera vez, abrazados, y a la mañana te fuiste con toda tu cabeza dando vueltas, igual que como había quedado el departamento.',
         media: null,
       },
       {
@@ -87,7 +87,7 @@ const HISTORIA = [
     fecha: 'Sábado 20 de septiembre de 2025',
     titulo: 'El día',
     subtitulo: 'Tres meses después de conocerte en persona, me animé.',
-    entrada: 'Llené todo de velas, cociné unas pastas a la bolognesa, puse decoración por todos lados y te regalé flores amarillas. Te pregunté si querías ser mi novia y me dijiste que sí. Un día antes de la primavera, como si el mundo hubiese estado esperando que lo dijéramos para empezar a florecer.',
+    entrada: 'Llené todo de velas, cociné unas pastas a la bolognesa, puse decoración por todos lados y te regalé unas flores rositas. Te pregunté si querías ser mi novia y me dijiste que sí. Un día antes de la primavera, como si el mundo hubiese estado esperando que lo dijéramos para empezar a florecer.',
     media: [{ src: 'img/04-20-septiembre.jpg', alt: 'El 20 de septiembre de 2025' }],
     cancion: null,
   },
@@ -102,7 +102,7 @@ const HISTORIA = [
     fecha: 'Septiembre — Diciembre 2025',
     titulo: 'La primavera de novios',
     subtitulo: 'Todo era nuevo y todo era con vos.',
-    flor: 'Flores de primavera',
+    flor: 'Flores rositas',
     momentos: [
       {
         texto: 'Desde ese día nos empezamos a ver casi todos los fines de semana. Y ahí, sin apuro, nos fuimos conociendo de verdad.',
@@ -131,14 +131,14 @@ const HISTORIA = [
     fecha: 'Diciembre 2025 — Marzo 2026',
     titulo: 'Traslasierras',
     subtitulo: 'El verano en que nos fuimos lejos y volvimos distintos.',
-    flor: 'Girasoles',
+    flor: 'Margaritas y girasoles',
     momentos: [
       {
         texto: 'El 6 de enero nos fuimos a Villa Dolores, a Traslasierras, para que conocieras a mi familia. Pasaron un par de cosas bastante chistosas en el camino que todavía nos hacen reír.',
         media: { src: 'img/07-traslasierras.jpg', alt: 'Villa Dolores, Traslasierras' },
       },
       {
-        texto: 'Ese verano te regalé girasoles.',
+        texto: 'Ese diciembre te regalé margaritas y girasoles.',
         media: null,
       },
     ],
@@ -196,10 +196,10 @@ const HISTORIA = [
     fecha: 'Marzo — Junio 2026',
     titulo: 'El otoño de los cumpleaños',
     subtitulo: 'Nos tocó festejarnos, cada uno a su manera.',
-    flor: 'Rosas',
+    flor: 'Astromelias',
     momentos: [
       {
-        texto: 'Para tu cumpleaños te escribí una carta y te regalé rosas. Me costó más escribir esa carta que cualquier cosa que haya programado en mi vida.',
+        texto: 'Para tu cumpleaños te escribí una carta y te regalé unas flores. Me costó más escribir esa carta que cualquier cosa que haya programado en mi vida, porque no hay papel que alcance para transmitirte todo el amor que te tengo.',
         media: { src: 'img/10-cumple-eri.jpg', alt: 'Tu cumpleaños' },
       },
       {
@@ -221,7 +221,7 @@ const HISTORIA = [
     fecha: 'Junio — Septiembre 2026',
     titulo: 'El mismo invierno, otra historia',
     subtitulo: 'Volvió el frío y esta vez ya éramos nosotros.',
-    flor: 'Flores de invierno',
+    flor: 'Rosas',
     momentos: [
       {
         texto: 'Este invierno pasamos un montón de días juntitos. Restaurantes, meriendas, cines, cumpleaños en tu casa, y muchas tardes de quedarnos adentro a jugar o ver películas sin hacer nada más.',
@@ -246,8 +246,8 @@ const HISTORIA = [
     titulo: 'Un año, Eri',
     subtitulo: 'Y esto recién arranca.',
     carta: [
-      'Te regalé flores en cada estación de este año. En primavera, girasoles en verano, rosas en otoño, flores en invierno, y flores también para tu cumpleaños. No fue algo que planeé: simplemente cada vez que cambiaba el clima me daban ganas de traerte algo que estuviera vivo.',
-      'Y hoy volvemos a las amarillas, las mismas de aquel 20 de septiembre. Como si el año fuera redondo y nos dejara justo donde empezamos, pero sabiendo todo lo que ahora sabemos.',
+      'Te regalé flores en cada estación de este año. Rositas cuando te pedí ser mi novia, margaritas y girasoles en diciembre, astromelias en abril, rosas en junio. No fue algo que planeé: simplemente, cada vez que cambiaba el clima, me daban ganas de traerte algo que estuviera vivo.',
+      'Hoy te tocan amarillas, las de la primavera que estamos por empezar de nuevo. El año dio la vuelta entera y nos dejó justo donde empezamos, pero sabiendo todo lo que ahora sabemos.',
       'Gracias por este año. Por el invierno en que te conocí sin imaginarme nada de esto, por la primavera en que me animé, por el verano en que vimos las estrellas lejos de todo, por el otoño en que nos cuidamos en lo chiquito, y por este invierno en el que ya sos mi lugar.',
       'Gracias por construir conmigo algo sano, de esos que no duelen. Gracias por las mandarinas al sol, por los mates en el parque, por bancarte mis horarios y por elegirme todos los días.',
       'Di la vuelta entera al año mirándote, y mañana volvería a empezar.',
