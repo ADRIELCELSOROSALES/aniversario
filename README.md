@@ -31,6 +31,7 @@ Copiá tus fotos en la carpeta `img/` con **exactamente** estos nombres:
 | `12-invierno.jpg` | Este invierno |
 | `13-nosotros.jpg` | Nosotros ahora |
 | `final.jpg` | El cierre |
+| `14-regalo.jpg` | Adentro del regalo de la avioneta |
 
 Mientras un archivo no exista se dibuja solo un cartel que dice qué foto va ahí.
 No rompe nada, así podés ir completando de a poco.
@@ -45,12 +46,22 @@ tardar en cargar en el celu. Desde la Terminal, con todas las fotos ya en `img/`
 sips -Z 1600 img/*.jpg
 ```
 
-## La escena del regalo está apagada
+## El regalo de la avioneta
 
-Al final de `js/historia.js` hay una escena llamada **"Mirá para arriba"** que le revela
-el regalo de la avioneta. Está **desactivada**. Si querés que la web se lo cuente,
-borrá la línea `oculta: true,` de esa escena. Si preferís decírselo vos en persona,
-dejala como está.
+La última escena es una **caja de regalo que se abre al tocarla**. Al hacer clic se
+desata el moño, salta la tapa, sale un **avión de papel** que cruza la pantalla dejando
+estela, y recién ahí aparece el texto, la foto y el remate:
+*"Nos vamos a subir a una avioneta. Y la vas a manejar vos."*
+
+Funciona con teclado (Tab + Enter) y con lector de pantalla.
+
+**Para sumar la foto el día del aniversario:** copiá el archivo como `img/14-regalo.jpg`
+y hacé `git add -A && git commit -m "foto" && git push`. Eso es todo — el sitio la toma
+sola, no hay que tocar código. Si llegás justo y no la subís, la escena funciona igual
+con el placeholder.
+
+Si preferís darle la noticia en persona y que la web no la revele, agregá
+`oculta: true,` a esa escena en `js/historia.js`.
 
 ## La noche de las estrellas
 

@@ -272,22 +272,75 @@ function escenaEstrellas(d) {
   return s;
 }
 
-/* ---- el regalo (escena opcional) ---- */
+/* ---- el regalo: una caja que se desenvuelve al tocarla ---- */
 function escenaRegalo(d) {
-  const s = el('section', 'escena umbral regalo');
+  const s = el('section', 'escena regalo');
   s.id = d.id;
   s.dataset.estacion = d.estacion;
 
-  const cont = el('div');
-  if (d.fecha) cont.appendChild(el('span', 'umbral__fecha revelar', d.fecha));
-  cont.appendChild(el('h2', 'umbral__titulo revelar', d.titulo));
-  if (d.entrada) cont.appendChild(el('p', 'umbral__texto revelar', d.entrada));
+  /* --- estado cerrado: la caja --- */
+  const cerrado = el('div', 'regalo__cerrado revelar');
+
+  const boton = document.createElement('button');
+  boton.type = 'button';
+  boton.className = 'regalo__boton';
+  boton.setAttribute('aria-label', `${d.etiquetaRegalo || 'Regalo'} — abrir`);
+  boton.innerHTML = `
+    <svg class="caja" viewBox="0 0 220 210" aria-hidden="true">
+      <!-- cintas que cuelgan -->
+      <g class="caja__lazos">
+        <path d="M110 46 C86 26 62 20 56 34 C50 48 76 54 110 46Z"/>
+        <path d="M110 46 C134 26 158 20 164 34 C170 48 144 54 110 46Z"/>
+        <path d="M104 44 C96 60 92 74 96 86"/>
+        <path d="M116 44 C124 60 128 74 124 86"/>
+        <circle class="caja__nudo" cx="110" cy="47" r="7"/>
+      </g>
+      <!-- tapa -->
+      <g class="caja__tapa">
+        <rect x="26" y="56" width="168" height="34" rx="4"/>
+        <rect class="caja__cinta" x="100" y="56" width="20" height="34"/>
+      </g>
+      <!-- cuerpo -->
+      <g class="caja__cuerpo">
+        <rect x="38" y="92" width="144" height="104" rx="4"/>
+        <rect class="caja__cinta" x="100" y="92" width="20" height="104"/>
+      </g>
+    </svg>
+    <span class="regalo__etiqueta">${d.etiquetaRegalo || 'Para vos'}</span>
+    <span class="regalo__abrir">${d.abrir || 'tocá para abrir'}</span>`;
+  cerrado.appendChild(boton);
+  s.appendChild(cerrado);
+
+  /* --- el avión de papel que sale de la caja --- */
+  const avion = document.createElement('div');
+  avion.className = 'regalo__vuelo';
+  avion.setAttribute('aria-hidden', 'true');
+  avion.innerHTML = `
+    <svg class="vuelo__svg" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet">
+      <path class="vuelo__ruta" id="ruta-avion" d="M110 300 C 250 300 300 150 440 170 C 580 190 600 340 730 300 C 830 270 880 170 960 120" fill="none"/>
+      <path class="vuelo__estela" d="M110 300 C 250 300 300 150 440 170 C 580 190 600 340 730 300 C 830 270 880 170 960 120" fill="none"/>
+      <g class="vuelo__avion">
+        <path class="avion__ala" d="M-17 -13 L23 0 L-17 13 L-9 0 Z"/>
+        <path class="avion__sombra" d="M-17 13 L-9 0 L23 0 Z"/>
+      </g>
+    </svg>`;
+  s.appendChild(avion);
+
+  /* --- estado abierto: lo que había adentro --- */
+  const abierto = el('div', 'regalo__abierto');
+  abierto.hidden = true;
+  if (d.fecha) abierto.appendChild(el('span', 'umbral__fecha', d.fecha));
+  abierto.appendChild(el('h2', 'umbral__titulo', d.titulo));
+  if (d.entrada) abierto.appendChild(el('p', 'umbral__texto', d.entrada));
 
   const m = (d.media || [])[0];
   const marco = crearMedia(m, d.estacion, true);
-  if (marco) { marco.classList.add('revelar'); cont.appendChild(marco); }
+  if (marco) { marco.classList.add('regalo__foto'); abierto.appendChild(marco); }
 
-  s.appendChild(cont);
+  if (d.remate) abierto.appendChild(el('p', 'regalo__remate', d.remate));
+  s.appendChild(abierto);
+
+  s._regalo = { boton, cerrado, abierto, avion, caja: boton.querySelector('.caja') };
   return s;
 }
 
@@ -306,6 +359,7 @@ export function construir(contenedor) {
     else if (d.estacion === 'final') s = escenaFinal(d);
     else s = escenaEstacion(d);
     if (s._cielo) cielos.push(s._cielo);
+    if (s._regalo) contenedor._regalo = s._regalo;
     frag.appendChild(s);
   });
   contenedor.appendChild(frag);

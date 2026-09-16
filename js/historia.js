@@ -259,19 +259,23 @@ const HISTORIA = [
   },
 
   /* ---------------------------------------------------------
-     8 · EL REGALO  (⚠️ OPCIONAL — está APAGADO)
-     Si querés que la web le revele el regalo de la avioneta,
-     borrá la palabra   oculta: true,   de acá abajo.
-     Si preferís dárselo en persona, dejalo como está.
+     8 · EL REGALO — se abre al tocarlo
+     La foto va en img/14-regalo.jpg (si todavía no está,
+     se muestra el placeholder y no rompe nada).
+     Para apagar esta escena, agregá   oculta: true,
      --------------------------------------------------------- */
   {
     id: 'regalo',
     estacion: 'regalo',
-    oculta: true,
     fecha: 'Todavía falta una cosa',
     titulo: 'Mirá para arriba',
-    entrada: 'Aquella noche en Traslasierras nos quedamos mirando el cielo desde abajo. Estudiás para llegar hasta ahí arriba, así que se me ocurrió que ya es hora de que lo veas desde el otro lado. Nos vamos a subir a una avioneta. Y la vas a manejar vos.',
-    media: [],
+    // ✏️ lo que dice la etiqueta del regalo, antes de abrirlo
+    etiquetaRegalo: 'Para vos',
+    abrir: 'tocá para abrir',
+    entrada: 'Aquella noche en Traslasierras nos quedamos mirando el cielo desde abajo. Estudiás para llegar hasta ahí arriba, así que se me ocurrió que ya es hora de que lo veas desde el otro lado.',
+    // ✏️ el remate, aparece al final y más grande
+    remate: 'Nos vamos a subir a una avioneta. Y la vas a manejar vos.',
+    media: [{ src: 'img/14-regalo.jpg', alt: 'El regalo' }],
     cancion: 'audio/final.mp3',
   },
 ];
