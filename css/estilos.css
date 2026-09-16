@@ -266,7 +266,7 @@ h1, h2, .cita, .carta p {
 .brote { display: block; margin: 0 auto clamp(2rem,5vh,3rem); width: clamp(60px, 14vw, 110px); }
 .brote path, .brote circle { fill: none; stroke: var(--acento); stroke-width: 1.1; stroke-linecap: round; }
 
-/* ---------- rama florecida (primavera) ---------- */
+/* ---------- rama florecida ---------- */
 .rama { width: min(100%, 38rem); margin: -1rem 0 clamp(2rem, 6vh, 3.5rem); }
 .rama svg { width: 100%; height: auto; overflow: visible; }
 .rama .t { fill: none; stroke: var(--acento); stroke-width: 1.4; stroke-linecap: round; opacity: .7; }
@@ -310,6 +310,95 @@ h1, h2, .cita, .carta p {
   content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 22%;
   z-index: 0; pointer-events: none;
   background: linear-gradient(to top, var(--bg) 18%, transparent);
+}
+
+/* ---------- el regalo ---------- */
+/* la caja y el contenido comparten celda: mismo centro exacto */
+.regalo {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  overflow: hidden;
+  min-height: 100svh;
+}
+.regalo__cerrado,
+.regalo__abierto { grid-area: 1 / 1; width: 100%; }
+
+/* --- la caja --- */
+.regalo__boton {
+  display: inline-flex; flex-direction: column; align-items: center; gap: .35rem;
+  padding: 1.5rem 2rem;
+  border: 0; background: none; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.regalo__boton:focus-visible { outline: 2px solid var(--acento); outline-offset: 6px; border-radius: 14px; }
+
+.caja__envase { position: relative; display: block; line-height: 0; }
+
+/* el resplandor que sale de adentro al abrirse */
+.caja__luz {
+  position: absolute; left: 50%; top: 58%;
+  width: 90px; height: 90px;
+  margin: -45px 0 0 -45px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--acento) 0%, color-mix(in oklab, var(--acento) 45%, transparent) 38%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.caja {
+  width: clamp(150px, 32vw, 236px); height: auto; overflow: visible;
+  filter: drop-shadow(0 22px 34px rgba(0,0,0,.45));
+}
+.caja rect { fill: color-mix(in oklab, var(--acento) 26%, var(--bg-2)); stroke: var(--acento); stroke-width: 1.4; }
+.caja .caja__cinta { fill: var(--acento); fill-opacity: .55; stroke: none; }
+.caja__lazos path { fill: color-mix(in oklab, var(--acento) 40%, transparent); stroke: var(--acento); stroke-width: 1.4; stroke-linecap: round; }
+.caja__lazos path:nth-child(3), .caja__lazos path:nth-child(4) { fill: none; }
+.caja__nudo { fill: var(--acento); stroke: none; }
+
+.regalo__etiqueta {
+  margin-top: 1.5rem;
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2.3rem);
+  color: var(--texto);
+}
+.regalo__abrir {
+  color: var(--acento);
+  font-size: .7rem; letter-spacing: .3em; text-transform: uppercase;
+  opacity: .85;
+}
+
+/* --- el vuelo: capa de alto fijo, no se descoloca cuando la sección crece --- */
+.regalo__vuelo {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 100svh;
+  z-index: 3; pointer-events: none; opacity: 0;
+}
+.vuelo__svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.vuelo__estela { stroke: var(--acento); stroke-width: 1.7; stroke-linecap: round; opacity: .5; }
+.vuelo__avion { filter: drop-shadow(0 3px 10px rgba(0,0,0,.5)); }
+.vuelo__avion .avion__ala    { fill: var(--texto); }
+.vuelo__avion .avion__sombra { fill: var(--acento); fill-opacity: .55; }
+
+/* --- lo que había adentro --- */
+.regalo__abierto {
+  position: relative; z-index: 2;
+  max-width: 46rem; margin-inline: auto;
+  padding-block: clamp(2rem, 6vh, 4rem);
+}
+.regalo__abierto .umbral__titulo { margin-top: 1rem; }
+.regalo__foto { margin: clamp(2.5rem, 7vh, 4rem) auto 0; max-width: 32rem; }
+.regalo__remate {
+  margin: clamp(2.5rem, 7vh, 4rem) auto 0;
+  max-width: 26ch;
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 1.1rem + 2.2vw, 3.1rem);
+  line-height: 1.22;
+  color: var(--acento);
+  text-wrap: balance;
 }
 
 /* ---------- final / carta ---------- */

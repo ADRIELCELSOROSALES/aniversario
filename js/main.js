@@ -314,24 +314,55 @@ observadorEstacion.observe(cuerpo, { attributes: true, attributeFilter: ['data-e
    --------------------------------------------------------- */
 const regalo = document.querySelector('main')._regalo;
 if (regalo) {
-  const { boton, cerrado, abierto, avion, caja } = regalo;
+  const { seccion, boton, cerrado, abierto, vuelo, caja, luz, svg, estela, nave } = regalo;
   const tapa   = caja.querySelector('.caja__tapa');
   const lazos  = caja.querySelector('.caja__lazos');
   const cuerpo = caja.querySelector('.caja__cuerpo');
-  const nave   = avion.querySelector('.vuelo__avion');
-  const estela = avion.querySelector('.vuelo__estela');
-  const ruta   = avion.querySelector('#ruta-avion');
+  const partes = [...abierto.children];
   let abierta = false;
 
-  const partes = [...abierto.children];
+  /* La ruta se calcula con el tamaño real de la escena, así el avión
+     sale de donde está la caja y cruza toda la pantalla de verdad.
+     Con viewBox igual al tamaño en píxeles no hay deformación. */
+  function trazarRuta() {
+    const w = Math.round(vuelo.clientWidth);
+    const h = Math.round(vuelo.clientHeight);
+    if (!w || !h) return;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+    const d =
+      `M ${w * 0.5} ${h * 0.44}` +
+      ` C ${w * 0.6} ${h * 0.38} ${w * 0.63} ${h * 0.6} ${w * 0.74} ${h * 0.53}` +
+      ` C ${w * 0.86} ${h * 0.46} ${w * 0.9} ${h * 0.2} ${w * 1.1} ${h * 0.06}`;
+    estela.setAttribute('d', d);
+  }
+  trazarRuta();
+  addEventListener('resize', () => { if (!abierta) trazarRuta(); }, { passive: true });
+
+  /* la caja respira mientras espera */
+  let latido = null;
+  if (!reducirMovimiento) {
+    latido = gsap.to(caja, {
+      y: -9, scale: 1.022,
+      duration: 1.8, ease: 'sine.inOut',
+      yoyo: true, repeat: -1, transformOrigin: '50% 100%',
+    });
+    boton.addEventListener('mouseenter', () => latido && latido.pause());
+    boton.addEventListener('mouseleave', () => !abierta && latido && latido.resume());
+  }
+
+  function encuadrar() {
+    const y = seccion.offsetTop;
+    if (lenis) lenis.scrollTo(y, { duration: 1.3 });
+    else scrollTo({ top: y, behavior: 'smooth' });
+  }
 
   function abrir() {
     if (abierta) return;
     abierta = true;
     boton.disabled = true;
     boton.setAttribute('aria-expanded', 'true');
+    if (latido) latido.kill();
 
-    // sin animaciones: se muestra y listo
     if (reducirMovimiento) {
       cerrado.hidden = true;
       abierto.hidden = false;
@@ -339,62 +370,55 @@ if (regalo) {
       return;
     }
 
-    const largoEstela = estela.getTotalLength();
-    gsap.set(estela, { strokeDasharray: largoEstela, strokeDashoffset: largoEstela, opacity: 0 });
-    gsap.set(partes, { opacity: 0, y: 26 });
-    gsap.set(nave, { scale: 0, opacity: 0 });
+    trazarRuta();
+    const largo = estela.getTotalLength();
+    gsap.set(estela, { strokeDasharray: largo, strokeDashoffset: largo, opacity: 0 });
+    gsap.set(nave, { scale: 0, opacity: 0, transformOrigin: '50% 50%' });
+    gsap.set(luz, { scale: 0.2, opacity: 0 });
+    gsap.set(partes, { opacity: 0, y: 30 });
 
     const t = gsap.timeline();
 
     // 1 · se desata el moño
-    t.to(lazos, { scale: 1.12, opacity: 0, duration: 0.5, ease: 'power2.in', transformOrigin: '50% 30%' });
+    t.to(lazos, { scale: 1.15, opacity: 0, duration: 0.45, ease: 'power2.in', transformOrigin: '50% 40%' });
 
     // 2 · la tapa salta y se va
-    t.to(tapa, {
-      y: -120, rotation: -16, opacity: 0,
-      duration: 0.75, ease: 'power2.out', transformOrigin: '50% 50%',
-    }, '-=0.18');
+    t.to(tapa, { y: -130, rotation: -14, opacity: 0, duration: 0.7, ease: 'power2.out', transformOrigin: '50% 50%' }, '-=0.15');
 
-    // 3 · destello desde adentro de la caja
-    t.fromTo(cuerpo,
-      { filter: 'brightness(1)' },
-      { filter: 'brightness(2.6)', duration: 0.28, yoyo: true, repeat: 1, ease: 'sine.inOut' },
-      '-=0.5');
+    // 3 · sale la luz de adentro
+    t.to(luz, { scale: 4.5, opacity: 0.9, duration: 0.45, ease: 'power2.out' }, '-=0.5');
+    t.to(luz, { scale: 7, opacity: 0, duration: 0.8, ease: 'power2.out' }, '-=0.12');
 
-    // 4 · sale el avión de papel y hace su vuelo
-    t.set(avion, { opacity: 1 }, '-=0.35');
-    t.to(nave, { scale: 1.5, opacity: 1, duration: 0.3, ease: 'back.out(2)' }, '-=0.3');
+    // 4 · el avión sale de la caja y hace su vuelo
+    t.set(vuelo, { opacity: 1 }, '-=0.9');
+    t.to(nave, { scale: 1.5, opacity: 1, duration: 0.3, ease: 'back.out(2)' }, '-=0.85');
     t.to(estela, { opacity: 0.5, duration: 0.3 }, '<');
 
-    if (MotionPathPlugin) {
-      t.to(nave, {
-        duration: 2.5,
-        ease: 'power1.inOut',
-        motionPath: { path: ruta, align: ruta, alignOrigin: [0.5, 0.5], autoRotate: true },
-      }, '<');
-    } else {
-      // por si el plugin no cargó: vuelo simple, igual se ve lindo
-      t.to(nave, { x: 780, y: -180, rotation: -18, duration: 2.5, ease: 'power1.inOut' }, '<');
-    }
-    t.to(estela, { strokeDashoffset: 0, duration: 2.5, ease: 'power1.inOut' }, '<');
+    const vueloOpts = MotionPathPlugin
+      ? { motionPath: { path: estela, align: estela, alignOrigin: [0.5, 0.5], autoRotate: true } }
+      : { x: vuelo.clientWidth * 0.5, y: -vuelo.clientHeight * 0.35, rotation: -20 };
+    t.to(nave, { duration: 2.3, ease: 'power1.inOut', ...vueloOpts }, '<');
+    t.to(estela, { strokeDashoffset: 0, duration: 2.3, ease: 'power1.inOut' }, '<');
 
-    // 5 · la caja vacía se desvanece
-    t.to(cerrado, { opacity: 0, scale: 0.9, duration: 0.7, ease: 'power2.inOut' }, '-=2.1');
-    t.add(() => { cerrado.hidden = true; abierto.hidden = false; }, '-=1.5');
+    // 5 · la caja vacía se apaga
+    t.to(cerrado, { opacity: 0, scale: 0.92, duration: 0.6, ease: 'power2.inOut' }, '-=1.9');
 
-    // 6 · aparece lo que había adentro
-    t.to(partes, {
-      opacity: 1, y: 0, duration: 1, ease: 'power3.out', stagger: 0.16,
-      onComplete: () => ScrollTrigger.refresh(),
-    }, '-=1.4');
+    // 6 · aparece lo que había adentro, en el mismo lugar donde estaba la caja
+    t.add(() => {
+      cerrado.hidden = true;
+      abierto.hidden = false;
+      ScrollTrigger.refresh();
+      encuadrar();
+    }, '-=1.25');
+    t.to(partes, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.14 }, '-=1.15');
 
-    // 7 · el avión se va del cuadro y se lleva la estela
-    t.to(nave, { opacity: 0, duration: 0.5 }, '-=1.4');
-    t.to(estela, { opacity: 0, duration: 1.2 }, '<');
+    // 7 · el avión se va de cuadro
+    t.to(nave, { opacity: 0, duration: 0.5 }, '-=1.2');
+    t.to(estela, { opacity: 0, duration: 1.1 }, '<');
+    t.add(() => ScrollTrigger.refresh());
   }
 
   boton.addEventListener('click', abrir);
-  boton.setAttribute('aria-expanded', 'false');
 }
 
 /* ---------------------------------------------------------

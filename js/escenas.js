@@ -263,61 +263,64 @@ function escenaEstrellas(d) {
   return s;
 }
 
-/* ---- el regalo: una caja que se desenvuelve al tocarla ---- */
+/* ---- el regalo: una caja que se desenvuelve al tocarla ----
+   La caja cerrada y el contenido viven en la MISMA celda de un grid,
+   así comparten centro exacto y lo que aparece queda donde estaba
+   la caja, en vez de irse abajo de la pantalla.                     */
 function escenaRegalo(d) {
   const s = el('section', 'escena regalo');
   s.id = d.id;
   s.dataset.estacion = d.estacion;
 
-  /* --- estado cerrado: la caja --- */
-  const cerrado = el('div', 'regalo__cerrado revelar');
-
-  const boton = document.createElement('button');
-  boton.type = 'button';
-  boton.className = 'regalo__boton';
-  boton.setAttribute('aria-label', `${d.etiquetaRegalo || 'Regalo'} — abrir`);
-  boton.innerHTML = `
-    <svg class="caja" viewBox="0 0 220 210" aria-hidden="true">
-      <!-- cintas que cuelgan -->
-      <g class="caja__lazos">
-        <path d="M110 46 C86 26 62 20 56 34 C50 48 76 54 110 46Z"/>
-        <path d="M110 46 C134 26 158 20 164 34 C170 48 144 54 110 46Z"/>
-        <path d="M104 44 C96 60 92 74 96 86"/>
-        <path d="M116 44 C124 60 128 74 124 86"/>
-        <circle class="caja__nudo" cx="110" cy="47" r="7"/>
-      </g>
-      <!-- tapa -->
-      <g class="caja__tapa">
-        <rect x="26" y="56" width="168" height="34" rx="4"/>
-        <rect class="caja__cinta" x="100" y="56" width="20" height="34"/>
-      </g>
-      <!-- cuerpo -->
-      <g class="caja__cuerpo">
-        <rect x="38" y="92" width="144" height="104" rx="4"/>
-        <rect class="caja__cinta" x="100" y="92" width="20" height="104"/>
-      </g>
-    </svg>
-    <span class="regalo__etiqueta">${d.etiquetaRegalo || 'Para vos'}</span>
-    <span class="regalo__abrir">${d.abrir || 'tocá para abrir'}</span>`;
-  cerrado.appendChild(boton);
-  s.appendChild(cerrado);
-
-  /* --- el avión de papel que sale de la caja --- */
-  const avion = document.createElement('div');
-  avion.className = 'regalo__vuelo';
-  avion.setAttribute('aria-hidden', 'true');
-  avion.innerHTML = `
-    <svg class="vuelo__svg" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet">
-      <path class="vuelo__ruta" id="ruta-avion" d="M110 300 C 250 300 300 150 440 170 C 580 190 600 340 730 300 C 830 270 880 170 960 120" fill="none"/>
-      <path class="vuelo__estela" d="M110 300 C 250 300 300 150 440 170 C 580 190 600 340 730 300 C 830 270 880 170 960 120" fill="none"/>
+  /* --- el vuelo, en una capa de alto fijo para que no se
+         descoloque cuando la sección crece al abrirse --- */
+  const vuelo = document.createElement('div');
+  vuelo.className = 'regalo__vuelo';
+  vuelo.setAttribute('aria-hidden', 'true');
+  vuelo.innerHTML = `
+    <svg class="vuelo__svg" preserveAspectRatio="none">
+      <path class="vuelo__estela" fill="none"/>
       <g class="vuelo__avion">
         <path class="avion__ala" d="M-17 -13 L23 0 L-17 13 L-9 0 Z"/>
         <path class="avion__sombra" d="M-17 13 L-9 0 L23 0 Z"/>
       </g>
     </svg>`;
-  s.appendChild(avion);
+  s.appendChild(vuelo);
 
-  /* --- estado abierto: lo que había adentro --- */
+  /* --- capa 1: la caja --- */
+  const cerrado = el('div', 'regalo__cerrado revelar');
+  const boton = document.createElement('button');
+  boton.type = 'button';
+  boton.className = 'regalo__boton';
+  boton.setAttribute('aria-label', `${d.etiquetaRegalo || 'Regalo'} — abrir`);
+  boton.setAttribute('aria-expanded', 'false');
+  boton.innerHTML = `
+    <span class="caja__envase">
+      <svg class="caja" viewBox="0 0 220 210" aria-hidden="true">
+        <g class="caja__lazos">
+          <path d="M110 46 C86 26 62 20 56 34 C50 48 76 54 110 46Z"/>
+          <path d="M110 46 C134 26 158 20 164 34 C170 48 144 54 110 46Z"/>
+          <path d="M104 44 C96 60 92 74 96 86"/>
+          <path d="M116 44 C124 60 128 74 124 86"/>
+          <circle class="caja__nudo" cx="110" cy="47" r="7"/>
+        </g>
+        <g class="caja__tapa">
+          <rect x="26" y="56" width="168" height="34" rx="4"/>
+          <rect class="caja__cinta" x="100" y="56" width="20" height="34"/>
+        </g>
+        <g class="caja__cuerpo">
+          <rect x="38" y="92" width="144" height="104" rx="4"/>
+          <rect class="caja__cinta" x="100" y="92" width="20" height="104"/>
+        </g>
+      </svg>
+      <span class="caja__luz" aria-hidden="true"></span>
+    </span>
+    <span class="regalo__etiqueta">${d.etiquetaRegalo || 'Para vos'}</span>
+    <span class="regalo__abrir">${d.abrir || 'tocá para abrir'}</span>`;
+  cerrado.appendChild(boton);
+  s.appendChild(cerrado);
+
+  /* --- capa 2: lo que había adentro, en la misma celda --- */
   const abierto = el('div', 'regalo__abierto');
   abierto.hidden = true;
   if (d.fecha) abierto.appendChild(el('span', 'umbral__fecha', d.fecha));
@@ -331,7 +334,14 @@ function escenaRegalo(d) {
   if (d.remate) abierto.appendChild(el('p', 'regalo__remate', d.remate));
   s.appendChild(abierto);
 
-  s._regalo = { boton, cerrado, abierto, avion, caja: boton.querySelector('.caja') };
+  s._regalo = {
+    seccion: s, boton, cerrado, abierto, vuelo,
+    caja: boton.querySelector('.caja'),
+    luz: boton.querySelector('.caja__luz'),
+    svg: vuelo.querySelector('.vuelo__svg'),
+    estela: vuelo.querySelector('.vuelo__estela'),
+    nave: vuelo.querySelector('.vuelo__avion'),
+  };
   return s;
 }
 

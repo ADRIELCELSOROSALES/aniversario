@@ -87,12 +87,13 @@ export class Cielo {
   fugaz() {
     this.fugaces.push({
       x: azar(this.w * 0.1, this.w * 0.9),
-      y: azar(0, this.h * 0.45),
-      vx: azar(-260, -150),
-      vy: azar(90, 170),
+      y: azar(-this.h * 0.05, this.h * 0.6),
+      vx: azar(-340, -120) * (Math.random() < 0.22 ? -1 : 1),   // alguna cruza al revés
+      vy: azar(70, 200),
       vida: 0,
-      total: azar(0.6, 1.1),
-      largo: azar(60, 140),
+      total: azar(0.7, 1.4),
+      largo: azar(90, 220),
+      grosor: azar(1.2, 2.4),
     });
   }
 
@@ -139,7 +140,7 @@ export class Cielo {
     }
 
     // estrellas fugaces, cada tanto
-    if (Math.random() < dt * 0.13) this.fugaz();
+    if (Math.random() < dt * 0.85) this.fugaz();
     for (let i = this.fugaces.length - 1; i >= 0; i--) {
       const f = this.fugaces[i];
       f.vida += dt;
@@ -155,12 +156,17 @@ export class Cielo {
       cola.addColorStop(0, `rgba(255,255,255,${op * 0.9})`);
       cola.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.strokeStyle = cola;
-      ctx.lineWidth = 1.6;
+      ctx.lineWidth = f.grosor;
       ctx.lineCap = 'round';
       ctx.beginPath();
       ctx.moveTo(x, y);
       ctx.lineTo(x - (f.vx / norma) * f.largo, y - (f.vy / norma) * f.largo);
       ctx.stroke();
+
+      ctx.fillStyle = `rgba(255,255,255,${op})`;
+      ctx.beginPath();
+      ctx.arc(x, y, f.grosor * 0.9, 0, Math.PI * 2);
+      ctx.fill();
     }
   }
 }

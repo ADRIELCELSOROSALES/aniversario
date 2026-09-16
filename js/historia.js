@@ -50,7 +50,7 @@ const HISTORIA = [
         media: null,
       },
       {
-        texto: 'A fines de junio te conocí en persona. Te recibí con una mesa dulce y salada bastante elaborada. Te sorprendiste de que hubiera preparado todo eso. Nunca aclaré que en realidad lo había comprado, pero con la comida te atrapé igual.',
+        texto: 'A fines de junio te conocí en persona. Te recibí con una mesa dulce y salada bastante elaborada. Te sorprendiste de que hubiera preparado todo eso. Nunca aclaré, pero con la comida te atrapé.',
         media: { src: 'img/01-mesa-dulce.jpg', alt: 'La mesa dulce y salada de la primera vez' },
       },
       {
@@ -132,7 +132,7 @@ const HISTORIA = [
     subtitulo: 'El verano en que nos fuimos lejos y volvimos distintos.',
     momentos: [
       {
-        texto: 'El 6 de enero nos fuimos a Villa Dolores, a Traslasierras, para que conocieras a mi familia. Pasaron un par de cosas bastante chistosas en el camino que todavía nos hacen reír.',
+        texto: 'En enero nos fuimos a Villa Dolores, a Traslasierras, para que conocieras a mi familia. Pasaron un par de cosas bastante chistosas en el camino que todavía nos hacen reír.',
         media: { src: 'img/07-traslasierras.jpg', alt: 'Villa Dolores, Traslasierras' },
       },
     ],
