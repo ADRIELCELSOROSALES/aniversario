@@ -207,9 +207,7 @@ function escenaFinal(d) {
   const m = (d.media || [])[0];
   const marco = crearMedia(m, d.estacion, true);
   if (marco) {
-    marco.classList.add('revelar');
-    marco.style.maxWidth = '38rem';
-    marco.style.margin = 'clamp(3rem,8vh,4.5rem) auto 0';
+    marco.classList.add('revelar', 'final__foto');
     cont.appendChild(marco);
   }
 

@@ -450,7 +450,20 @@ const rescate = new IntersectionObserver((entradas) => {
 document.querySelectorAll('.revelar, .rama').forEach((el) => rescate.observe(el));
 
 /* ---------------------------------------------------------
-   11 · detalles finales
+   11 · en el celu, los controles se apartan mientras se scrollea
+   --------------------------------------------------------- */
+if (matchMedia('(max-width: 700px)').matches) {
+  const flotantes = [rueda, document.querySelector('.musica')];
+  let quieto;
+  addEventListener('scroll', () => {
+    flotantes.forEach((f) => f.classList.add('apartado'));
+    clearTimeout(quieto);
+    quieto = setTimeout(() => flotantes.forEach((f) => f.classList.remove('apartado')), 600);
+  }, { passive: true });
+}
+
+/* ---------------------------------------------------------
+   12 · detalles finales
    --------------------------------------------------------- */
 // arrancar siempre arriba, aunque el navegador recuerde la posición
 history.scrollRestoration = 'manual';
