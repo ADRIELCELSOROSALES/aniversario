@@ -272,9 +272,9 @@ const HISTORIA = [
     // ✏️ lo que dice la etiqueta del regalo, antes de abrirlo
     etiquetaRegalo: 'Para vos',
     abrir: 'tocá para abrir',
-    entrada: 'Aquella noche en Traslasierras nos quedamos mirando el cielo desde abajo. Estudiás para llegar hasta ahí arriba, así que se me ocurrió que ya es hora de que lo veas desde el otro lado.',
+    entrada: 'Aquella noche en Traslasierras nos quedamos mirando el cielo desde abajo, los dos. Estudiás para llegar hasta ahí arriba, así que se me ocurrió que ya es hora de que lo veas desde el otro lado.',
     // ✏️ el remate, aparece al final y más grande
-    remate: 'Nos vamos a subir a una avioneta. Y la vas a manejar vos.',
+    remate: 'Vas a volar una avioneta. Vos a los mandos, y yo abajo mirándote, como aquella noche.',
     media: [{ src: 'img/14-regalo.jpg', alt: 'El regalo' }],
     cancion: 'audio/final.mp3',
   },

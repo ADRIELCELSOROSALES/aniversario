@@ -41,6 +41,12 @@ button { font: inherit; color: inherit; }
 [data-estacion="final"]           { --bg:#0f0a14; --bg-2:#2a1c2b; --texto:#fbf2e4; --tenue:#b09a8a; --acento:#e9c283; }
 
 /* ---------- base ---------- */
+/* el color del texto cambia de golpe en el cruce entre estaciones
+   (para no perder contraste); esta transición corta lo disimula */
+body, h1, h2, h3, p, span, a, .cita, .firma, .escena__fecha, .escena__etiqueta {
+  transition: color .32s linear;
+}
+
 body {
   margin: 0;
   background: var(--bg);
@@ -49,7 +55,6 @@ body {
   font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
   line-height: 1.65;
   overflow-x: hidden;
-  transition: background-color 1.1s var(--curva), color 1.1s var(--curva);
 }
 
 /* halo de color detrás de todo, se mueve suave */
@@ -59,7 +64,6 @@ body {
     radial-gradient(120vmax 90vmax at 70% 12%, var(--bg-2) 0%, transparent 62%),
     radial-gradient(90vmax 70vmax at 15% 85%, var(--bg-2) 0%, transparent 58%);
   opacity: .9;
-  transition: background 1.1s var(--curva);
 }
 
 /* canvas de pétalos / copos / hojas */
@@ -499,6 +503,8 @@ h1, h2, .cita, .carta p {
 
 /* ---------- accesibilidad ---------- */
 @media (prefers-reduced-motion: reduce) {
+  body { transition: background-color .9s ease, color .9s ease; }
+  .atmosfera { transition: background .9s ease; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .revelar { opacity: 1; transform: none; }
   #particulas { display: none; }

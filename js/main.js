@@ -69,6 +69,118 @@ escenas.forEach((seccion) => {
 cuerpo.dataset.estacion = HISTORIA[0].estacion;
 
 /* ---------------------------------------------------------
+   4b · el color va cambiando de a poco, no de golpe
+   Las estaciones se funden una en otra a medida que scrolleás.
+   Los colores se leen del propio CSS, así las paletas viven en
+   un solo lugar (css/estilos.css) y esto nunca queda desfasado.
+   --------------------------------------------------------- */
+const VARS = ['--bg', '--bg-2', '--texto', '--tenue', '--acento'];
+
+function aRgb(hex) {
+  hex = hex.trim();
+  if (hex.startsWith('rgb')) return hex.match(/\d+/g).slice(0, 3).map(Number);
+  if (hex.length === 4) hex = '#' + [1, 2, 3].map((i) => hex[i] + hex[i]).join('');
+  return [1, 3, 5].map((i) => parseInt(hex.substr(i, 2), 16));
+}
+
+function leerPaletas() {
+  const sonda = document.createElement('div');
+  sonda.style.cssText = 'position:absolute;visibility:hidden;pointer-events:none';
+  document.body.appendChild(sonda);
+  const paletas = {};
+  new Set(HISTORIA.map((d) => d.estacion)).forEach((est) => {
+    sonda.dataset.estacion = est;
+    const cs = getComputedStyle(sonda);
+    paletas[est] = VARS.map((v) => aRgb(cs.getPropertyValue(v)));
+  });
+  sonda.remove();
+  return paletas;
+}
+
+if (!reducirMovimiento) {
+  const paletas = leerPaletas();
+  let marcas = [];
+
+  const medir = () => {
+    marcas = escenas.map((sec) => ({
+      centro: sec.offsetTop + sec.offsetHeight / 2,
+      pal: paletas[porId[sec.id].estacion],
+    }));
+  };
+
+  // contraste WCAG, para no dejar nunca el texto ilegible
+  const canal = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+  const lumin = (c) => 0.2126 * canal(c[0]) + 0.7152 * canal(c[1]) + 0.0722 * canal(c[2]);
+  const contraste = (c1, c2) => {
+    const l1 = lumin(c1), l2 = lumin(c2);
+    return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+  };
+  const mezclar = (ca, cb, t) => [
+    Math.round(ca[0] + (cb[0] - ca[0]) * t),
+    Math.round(ca[1] + (cb[1] - ca[1]) * t),
+    Math.round(ca[2] + (cb[2] - ca[2]) * t),
+  ];
+  const poner = (v, c) => cuerpo.style.setProperty(v, `rgb(${c[0]},${c[1]},${c[2]})`);
+
+  const pintar = (a, b, t) => {
+    // los fondos sí se funden de a poco, que es lo que se ve
+    const bg = mezclar(a[0], b[0], t);
+    poner('--bg', bg);
+    poner('--bg-2', mezclar(a[1], b[1], t));
+
+    // el texto NO se funde: mezclar un texto claro con uno oscuro da gris
+    // sobre un fondo gris, y queda ilegible justo en el cruce. Se usa el de
+    // la estación que mejor se lea sobre el fondo que hay en ese momento;
+    // el cambio lo suaviza una transición corta de CSS.
+    const cual = contraste(b[2], bg) > contraste(a[2], bg) ? b : a;
+
+    // en el cruce, si al color le falta contraste, se lo empuja hacia el
+    // blanco o el negro lo mínimo necesario para que siga siendo legible
+    const asegurar = (color, minimo) => {
+      if (contraste(color, bg) >= minimo) return color;
+      const destino = lumin(color) > lumin(bg) ? [255, 255, 255] : [0, 0, 0];
+      for (let k = 0.15; k < 1; k += 0.15) {
+        const probado = mezclar(color, destino, k);
+        if (contraste(probado, bg) >= minimo) return probado;
+      }
+      return destino;
+    };
+
+    poner('--texto', asegurar(cual[2], 4.5));
+    poner('--tenue', asegurar(cual[3], 4.5));
+    poner('--acento', asegurar(cual[4], 3));
+  };
+
+  let ultimo = -1;
+  const actualizar = () => {
+    if (!marcas.length) return;
+    const y = scrollY + innerHeight / 2;
+    if (Math.abs(y - ultimo) < 0.5) return;
+    ultimo = y;
+
+    if (y <= marcas[0].centro) return pintar(marcas[0].pal, marcas[0].pal, 0);
+    const fin = marcas[marcas.length - 1];
+    if (y >= fin.centro) return pintar(fin.pal, fin.pal, 0);
+
+    for (let i = 0; i < marcas.length - 1; i++) {
+      const a = marcas[i], b = marcas[i + 1];
+      if (y >= a.centro && y < b.centro) {
+        // reparto parejo a lo largo de todo el tramo entre secciones:
+        // el cambio se percibe continuo en vez de concentrarse en el cruce
+        const t = (y - a.centro) / (b.centro - a.centro);
+        return pintar(a.pal, b.pal, t);
+      }
+    }
+  };
+
+  medir();
+  actualizar();
+  gsap.ticker.add(actualizar);
+  ScrollTrigger.addEventListener('refresh', () => { medir(); ultimo = -1; actualizar(); });
+  addEventListener('resize', () => { medir(); ultimo = -1; actualizar(); }, { passive: true });
+}
+
+/* ---------------------------------------------------------
    5 · revelados: todo lo que tenga .revelar entra al aparecer
    --------------------------------------------------------- */
 escenas.forEach((seccion) => {
