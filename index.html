@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Un año · Eri & Adriel</title>
+<meta name="description" content="Un recorrido por nuestro primer año, estación por estación.">
+<meta name="theme-color" content="#05070f">
+<meta name="robots" content="noindex, nofollow">
+
+<!-- al compartir el link por WhatsApp -->
+<meta property="og:title" content="Un año">
+<meta property="og:description" content="Una vuelta entera del mundo, con vos.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="img/final.jpg">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🌸</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Karla:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body data-estacion="portada">
+
+  <div class="atmosfera" aria-hidden="true"></div>
+  <canvas id="particulas" aria-hidden="true"></canvas>
+
+  <!-- el contenido lo arma js/escenas.js leyendo js/historia.js -->
+  <main></main>
+
+  <!-- la rueda del año -->
+  <div class="rueda" aria-hidden="true">
+    <svg class="rueda__svg" viewBox="0 0 64 64">
+      <circle class="rueda__pista" cx="32" cy="32" r="26"/>
+      <circle class="rueda__arco"  cx="32" cy="32" r="26"/>
+      <g>
+        <circle class="rueda__marca" cx="32" cy="6"  r="2.6"/>
+        <circle class="rueda__marca" cx="58" cy="32" r="2.6"/>
+        <circle class="rueda__marca" cx="32" cy="58" r="2.6"/>
+        <circle class="rueda__marca" cx="6"  cy="32" r="2.6"/>
+      </g>
+      <text class="rueda__txt" x="32" y="35"></text>
+    </svg>
+  </div>
+
+  <!-- música -->
+  <button class="musica" type="button" aria-pressed="false" aria-label="Activar o desactivar la música">
+    <span class="musica__ondas" aria-hidden="true"><span></span><span></span><span></span></span>
+    <span class="musica__label">sin música</span>
+  </button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
