@@ -49,9 +49,12 @@ const musica = new Musica(document.querySelector('.musica'), MUSICA);
 const porId = Object.fromEntries(HISTORIA.map((d) => [d.id, d]));
 const cuerpo = document.body;
 
+let cerrandoCiclo = false;
+
 function entrarEn(seccion) {
   const d = porId[seccion.id];
   if (!d) return;
+  if (cerrandoCiclo) return;   // el cierre del año manda mientras dura
   cuerpo.dataset.estacion = d.estacion;
   if (particulas) particulas.cambiar(d.estacion);
 }
@@ -182,18 +185,63 @@ if (!reducirMovimiento) {
 /* ---------------------------------------------------------
    5 · revelados: todo lo que tenga .revelar entra al aparecer
    --------------------------------------------------------- */
+// cada estación revela sus fotos a su manera, para que quince fotos
+// no entren las quince igual
+const ENTRADA_FOTO = {
+  'invierno-frio':   { desde: { filter: 'blur(16px)', scale: 1.04 }, hasta: { filter: 'blur(0px)', scale: 1 }, duracion: 1.5 },
+  'invierno-calido': { desde: { filter: 'blur(16px)', scale: 1.04 }, hasta: { filter: 'blur(0px)', scale: 1 }, duracion: 1.5 },
+  primavera:         { desde: { scale: 0.92, rotation: -1.6 },       hasta: { scale: 1, rotation: 0 },         duracion: 1.3 },
+  verano:            { desde: { filter: 'brightness(2.6)' },         hasta: { filter: 'brightness(1)' },       duracion: 1.4 },
+  otono:             { desde: { rotation: 3.5, y: -34 },             hasta: { rotation: 0, y: 0 },             duracion: 1.5 },
+};
+
 escenas.forEach((seccion) => {
-  const items = seccion.querySelectorAll('.revelar');
-  if (!items.length) return;
-  gsap.to(items, {
-    opacity: 1,
-    y: 0,
-    duration: 1.1,
-    ease: 'power3.out',
-    stagger: 0.09,
-    scrollTrigger: { trigger: seccion, start: 'top 72%', once: true },
+  const estacion = (porId[seccion.id] || {}).estacion;
+  const receta = ENTRADA_FOTO[estacion];
+  const todos = [...seccion.querySelectorAll('.revelar')];
+  // las fotos llevan SIEMPRE su propio disparador: en una escena alta,
+  // uno puesto en la sección entera ya pasó cuando la foto recién aparece
+  const marcos = todos.filter((e) => e.classList.contains('marco') || e.querySelector?.('.marco'));
+  const resto = todos.filter((e) => !marcos.includes(e));
+
+  if (resto.length) {
+    gsap.to(resto, {
+      opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', stagger: 0.09,
+      scrollTrigger: { trigger: seccion, start: 'top 72%', once: true },
+    });
+  }
+
+  marcos.forEach((marco) => {
+    gsap.to(marco, {
+      opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: marco, start: 'top 88%', once: true },
+    });
+    if (!receta) return;   // sin receta, alcanza con el fundido de arriba
+    const foto = marco.querySelector('img, video') || marco;
+    gsap.fromTo(foto, receta.desde, {
+      ...receta.hasta,
+      duration: receta.duracion,
+      ease: 'power2.out',
+      clearProps: 'filter',   // deja que el CSS vuelva a mandar al terminar
+      scrollTrigger: { trigger: marco, start: 'top 88%', once: true },
+    });
   });
 });
+
+/* ---------------------------------------------------------
+   5a · la portada: el título se arma letra por letra
+   --------------------------------------------------------- */
+const letras = document.querySelectorAll('.portada__titulo .letra');
+if (letras.length) {
+  if (reducirMovimiento) {
+    gsap.set(letras, { opacity: 1, y: 0 });
+  } else {
+    gsap.to(letras, {
+      opacity: 1, y: 0,
+      duration: 1.1, ease: 'power3.out', stagger: 0.075, delay: 0.35,
+    });
+  }
+}
 
 /* ---------------------------------------------------------
    5b · las frases sin foto se revelan palabra por palabra
@@ -332,6 +380,47 @@ const observadorEstacion = new MutationObserver(() => {
   if (etiquetaRueda) etiquetaRueda.textContent = NOMBRE[est] || '';
 });
 observadorEstacion.observe(cuerpo, { attributes: true, attributeFilter: ['data-estacion'] });
+
+/* ---------------------------------------------------------
+   4c · el círculo que cierra
+   Al llegar al final, el año entero pasa de nuevo en dos segundos:
+   las partículas recorren las cuatro estaciones y la rueda se va
+   encendiendo, antes de quedar en el dorado del aniversario.
+   --------------------------------------------------------- */
+const escenaFinal = escenas.find((s) => s.id === 'final');
+if (escenaFinal && particulas && !reducirMovimiento) {
+  ScrollTrigger.create({
+    trigger: escenaFinal,
+    start: 'top 62%',
+    once: true,
+    onEnter: () => {
+      cerrandoCiclo = true;
+      const vuelta = [
+        ['invierno-frio', 0],
+        ['primavera', 1],
+        ['verano', 2],
+        ['otono', 3],
+        ['final', null],
+      ];
+      vuelta.forEach(([estacion, cuarto], i) => {
+        setTimeout(() => {
+          particulas.cambiar(estacion);
+          if (cuarto !== null) {
+            marcas.forEach((m, k) => m.classList.toggle('activa', k === cuarto));
+            if (etiquetaRueda) etiquetaRueda.textContent = NOMBRE[estacion] || '';
+          } else {
+            // cerró la vuelta: se encienden las cuatro y queda el año
+            marcas.forEach((m) => m.classList.add('activa'));
+            if (etiquetaRueda) etiquetaRueda.textContent = '1 año';
+            gsap.fromTo(rueda, { scale: 1 }, { scale: 1.16, duration: 0.35, yoyo: true, repeat: 1, ease: 'power2.out' });
+            cerrandoCiclo = false;
+          }
+        }, i * 520);
+      });
+    },
+  });
+}
+
 
 /* ---------------------------------------------------------
    9 · el regalo: se desenvuelve al tocarlo y sale el avión
@@ -479,6 +568,27 @@ const rescate = new IntersectionObserver((entradas) => {
 }, { threshold: 0.15 });
 
 document.querySelectorAll('.revelar, .rama, .momento__frase').forEach((el) => rescate.observe(el));
+
+// Y lo que ya quedó atrás: si alguien scrollea muy rápido, un disparador
+// puede no llegar a ejecutarse y el elemento se quedaría invisible para
+// siempre. Esto revela lo que el lector ya pasó de largo.
+function rescatarPasados() {
+  document.querySelectorAll('.revelar, .momento__frase').forEach((el) => {
+    const caja = el.getBoundingClientRect();
+    if (caja.bottom > 0) return;                       // todavía no pasó
+    if (parseFloat(getComputedStyle(el).opacity) >= 0.05) return;
+    gsap.set(el, { opacity: 1, y: 0 });
+    const dentro = el.querySelectorAll('.palabra, .flor');
+    if (dentro.length) gsap.set(dentro, { opacity: 1, y: 0, scale: 1 });
+  });
+}
+
+let revisando;
+addEventListener('scroll', () => {
+  clearTimeout(revisando);
+  revisando = setTimeout(rescatarPasados, 400);
+}, { passive: true });
+ScrollTrigger.addEventListener('refresh', rescatarPasados);
 
 /* ---------------------------------------------------------
    11 · en el celu, los controles se apartan mientras se scrollea

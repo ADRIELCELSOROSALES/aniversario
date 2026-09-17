@@ -157,8 +157,21 @@ function escenaPortada(d) {
   s.id = d.id;
   s.dataset.estacion = d.estacion;
 
+  // el aura de fondo va pasando por los colores de las cuatro estaciones
+  const aura = el('div', 'portada__aura');
+  aura.setAttribute('aria-hidden', 'true');
+  s.appendChild(aura);
+
   const cont = el('div');
-  cont.appendChild(el('h1', 'portada__titulo revelar', d.titulo));
+  const titulo = el('h1', 'portada__titulo');
+  [...d.titulo].forEach((letra) => {
+    if (letra === ' ') { titulo.appendChild(document.createTextNode(' ')); return; }
+    const w = document.createElement('span');
+    w.className = 'letra';
+    w.textContent = letra;
+    titulo.appendChild(w);
+  });
+  cont.appendChild(titulo);
   cont.appendChild(el('p', 'portada__sub revelar', d.subtitulo));
   cont.appendChild(el('p', 'portada__entrada revelar', d.entrada));
   s.appendChild(cont);

@@ -263,6 +263,26 @@ h1, h2, .cita, .carta p {
 
 /* ---------- portada ---------- */
 .portada { align-items: center; text-align: center; }
+
+/* el año entero insinuado detrás del título */
+.portada__aura {
+  position: absolute; inset: 0; z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(48% 42% at 50% 44%, var(--aura) 0%, transparent 68%);
+  filter: blur(42px);
+  opacity: .5;
+  animation: recorrer-el-ano 26s ease-in-out infinite;
+}
+@keyframes recorrer-el-ano {
+  0%,  100% { --aura: #8fc0e3; opacity: .34; transform: scale(1); }
+  25%       { --aura: #dd7793; opacity: .5;  transform: scale(1.06); }
+  50%       { --aura: #e0873a; opacity: .46; transform: scale(1.02); }
+  75%       { --aura: #dd8f43; opacity: .42; transform: scale(1.05); }
+}
+@property --aura { syntax: '<color>'; inherits: false; initial-value: #8fc0e3; }
+
+/* el título entra letra por letra */
+.letra { display: inline-block; opacity: 0; transform: translateY(0.34em); }
 .portada__titulo {
   font-family: var(--serif); font-weight: 200;
   font-size: clamp(4.5rem, 2rem + 16vw, 15rem);

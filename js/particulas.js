@@ -147,6 +147,27 @@ class Particula {
     this.fase += this.vFase * dt * 60;
     this.ang += this.vGiro * dt;
 
+    // se aparta de donde toca, con un poco de remolino
+    const dedo = this.s.dedo;
+    if (dedo.fuerza > 0.02) {
+      const dx = this.x - dedo.x;
+      const dy = this.y - dedo.y;
+      const dist2 = dx * dx + dy * dy;
+      const radio = this.s.radioDedo;
+      if (dist2 < radio * radio && dist2 > 1) {
+        const dist = Math.sqrt(dist2);
+        const empuje = (1 - dist / radio) * dedo.fuerza;
+        const ux = dx / dist, uy = dy / dist;
+        // hacia afuera
+        this.x += ux * empuje * 190 * dt;
+        this.y += uy * empuje * 190 * dt;
+        // y un giro alrededor, para que parezca remolino y no explosión
+        this.x += -uy * empuje * 95 * dt;
+        this.y += ux * empuje * 95 * dt;
+        this.ang += empuje * dt * 3;
+      }
+    }
+
     // viento global suave + vaivén propio
     this.x += (Math.sin(this.fase) * this.amp + this.s.viento) * dt * 60;
     this.y += (p.sube ? -this.vel : this.vel) * dt * 60;
@@ -265,6 +286,16 @@ export class SistemaParticulas {
     this.activo = true;
     this.ultimo = performance.now();
 
+    // dónde está el dedo (o el mouse) para que las partículas lo esquiven
+    this.dedo = { x: 0, y: 0, fuerza: 0 };
+    const tocar = (x, y) => { this.dedo.x = x; this.dedo.y = y; this.dedo.fuerza = 1; };
+    addEventListener('pointermove', (e) => tocar(e.clientX, e.clientY), { passive: true });
+    addEventListener('touchmove', (e) => {
+      const t = e.touches[0];
+      if (t) tocar(t.clientX, t.clientY);
+    }, { passive: true });
+    addEventListener('pointerleave', () => { this.dedo.fuerza = 0; });
+
     this.redimensionar();
     addEventListener('resize', () => this.redimensionar(), { passive: true });
     document.addEventListener('visibilitychange', () => {
@@ -288,6 +319,7 @@ export class SistemaParticulas {
     this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     // en pantallas chicas, menos partículas
     this.factor = this.w < 700 ? 0.45 : this.w < 1100 ? 0.75 : 1;
+    this.radioDedo = this.w < 700 ? 110 : 165;
   }
 
   poblar(n, dentro = false) {
@@ -317,6 +349,7 @@ export class SistemaParticulas {
     if (dt > 0.1) dt = 0.1;  // evita saltos al volver de otra pestaña
 
     this.viento += (this.vientoObjetivo - this.viento) * dt * 0.6;
+    if (this.dedo.fuerza > 0) this.dedo.fuerza = Math.max(0, this.dedo.fuerza - dt * 0.55);
 
     const ctx = this.ctx;
     ctx.clearRect(0, 0, this.w, this.h);
