@@ -196,10 +196,35 @@ escenas.forEach((seccion) => {
 });
 
 /* ---------------------------------------------------------
+   5b · las frases sin foto se revelan palabra por palabra
+   --------------------------------------------------------- */
+document.querySelectorAll('.momento__frase').forEach((frase) => {
+  const palabras = frase.querySelectorAll('.palabra');
+  if (!palabras.length) return;
+
+  if (reducirMovimiento) {
+    gsap.set(palabras, { opacity: 1, y: 0 });
+    return;
+  }
+
+  gsap.to(palabras, {
+    opacity: 1,
+    y: 0,
+    duration: 0.7,
+    ease: 'power2.out',
+    stagger: 0.028,
+    scrollTrigger: { trigger: frase, start: 'top 82%', once: true },
+  });
+});
+
+/* ---------------------------------------------------------
    6 · parallax suave en las fotos
    --------------------------------------------------------- */
 if (!reducirMovimiento) {
   document.querySelectorAll('.marco').forEach((marco) => {
+    // una foto marcada como completa no se escala: el parallax
+    // recorta un 16% de los bordes y ahí se perdería parte de la imagen
+    if (marco.classList.contains('marco--completa')) return;
     const medio = marco.querySelector('img, video');
     if (!medio) return;
     gsap.fromTo(
@@ -443,12 +468,17 @@ const rescate = new IntersectionObserver((entradas) => {
           gsap.to(f, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(2)' });
         }
       });
+      const palabras = el.classList.contains('momento__frase')
+        ? el.querySelectorAll('.palabra') : [];
+      if (palabras.length && parseFloat(getComputedStyle(palabras[0]).opacity) < 0.05) {
+        gsap.to(palabras, { opacity: 1, y: 0, duration: 0.5, stagger: 0.02 });
+      }
     }, 1600);
     rescate.unobserve(el);
   });
 }, { threshold: 0.15 });
 
-document.querySelectorAll('.revelar, .rama').forEach((el) => rescate.observe(el));
+document.querySelectorAll('.revelar, .rama, .momento__frase').forEach((el) => rescate.observe(el));
 
 /* ---------------------------------------------------------
    11 · en el celu, los controles se apartan mientras se scrollea

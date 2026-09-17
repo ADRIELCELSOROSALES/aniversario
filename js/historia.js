@@ -71,7 +71,7 @@ const HISTORIA = [
       },
       {
         texto: 'A fines de junio te conocí en persona. Te recibí con una mesa dulce y salada bastante elaborada. Te sorprendiste de que hubiera preparado todo eso. Nunca aclaré, pero con la comida te atrapé.',
-        media: { src: 'img/01-mesa-dulce.jpg', alt: 'La mesa dulce y salada de la primera vez' },
+        media: { src: 'img/01-mesa-dulce.jpg', alt: 'Nuestra primera cita' },
       },
       {
         texto: 'Nos quedamos hablando un montón de horas en mi antiguo departamento. Fue una conexión muy profunda, de esas que no se fuerzan. No pasó nada más esa tarde, y me quedé con muchísimas ganas de conocerte más.',
@@ -87,7 +87,7 @@ const HISTORIA = [
       },
       {
         texto: 'Desde ahí nos empezamos a ver seguido. Te iba a buscar a la facultad y comíamos mandarinas al sol en tus recreos. Salía del trabajo y cruzaba la ciudad aunque fuera solo para acompañarte a la parada del colectivo.',
-        media: { src: 'img/03-mandarinas.jpg', alt: 'Mandarinas al sol en la facultad' },
+        media: { src: 'img/03-mandarinas.jpg', alt: 'Nuestras primeras salidas a comer' },
       },
       {
         texto: 'Entre mi laburo de desarrollador y tu ingeniería aeroespacial, aprendimos a exprimir cada minuto libre que teníamos. Todavía lo hacemos.',
@@ -107,7 +107,7 @@ const HISTORIA = [
     titulo: 'El día',
     subtitulo: 'Tres meses después de conocerte en persona, me animé.',
     entrada: 'Llené todo de velas, cociné unas pastas a la bolognesa, puse decoración por todos lados y te regalé unas flores. Te pregunté si querías ser mi novia y me dijiste que sí. Un día antes de la primavera, como si el mundo hubiese estado esperando que lo dijéramos para empezar a florecer.',
-    media: [{ src: 'img/04-20-septiembre.jpg', alt: 'El 20 de septiembre de 2025' }],
+    media: [{ src: 'img/04-20-septiembre.jpg', alt: 'El 20 de septiembre de 2025', forma: 'corazon' }],
   },
 
   /* ---------------------------------------------------------
@@ -130,8 +130,8 @@ const HISTORIA = [
         media: null,
       },
       {
-        texto: 'En diciembre me invitaste a pasar Navidad en tu casa, con tu familia, para que los conociera mejor. Ese fue el momento en que dejé de sentirme visita.',
-        media: { src: 'img/06-navidad.jpg', alt: 'Navidad en tu casa' },
+        texto: 'Una noche de noviembre nos fuimos a la Noche de los Museos. Caminamos la ciudad hasta cualquier hora, metiéndonos en lugares que ninguno de los dos conocía, sin mirar el reloj ni una vez.',
+        media: { src: 'img/06-noche-museos.jpg', alt: 'La Noche de los Museos' },
       },
     ],
     cita: 'Nunca una primavera se pareció tanto a su nombre.',
@@ -192,6 +192,7 @@ const HISTORIA = [
       },
     ],
     cita: 'Si tuviera que elegir un verano para vivir siempre, elijo este.',
+    citaMedia: { src: 'img/10-verano-cierre.jpg', alt: 'El parque acuático' },
   },
 
   /* ---------------------------------------------------------
@@ -207,11 +208,11 @@ const HISTORIA = [
     momentos: [
       {
         texto: 'Para tu cumpleaños te escribí una carta y te regalé unas flores. Me costó más escribir esa carta que cualquier cosa que haya programado en mi vida, porque no hay papel que alcance para transmitirte todo el amor que te tengo.',
-        media: { src: 'img/10-cumple-eri.jpg', alt: 'Tu cumpleaños' },
+        media: { src: 'img/11-cumple-eri.jpg', alt: 'Tu cumpleaños', realce: true },
       },
       {
         texto: 'El 30 de mayo, para el mío, me llevaste al cine y me armaste una noche hermosa. No me esperaba nada y me diste todo.',
-        media: { src: 'img/11-cumple-adriel.jpg', alt: 'Mi cumpleaños, 30 de mayo' },
+        media: { src: 'img/12-cumple-adriel.jpg', alt: 'Mi cumpleaños, 30 de mayo', completa: true },
       },
     ],
     cita: 'Ese otoño aprendimos a cuidarnos también en los detalles chiquitos.',
@@ -230,11 +231,11 @@ const HISTORIA = [
     momentos: [
       {
         texto: 'Este invierno pasamos un montón de días juntitos. Restaurantes, meriendas, cines, cumpleaños en tu casa, y muchas tardes de quedarnos adentro a jugar o ver películas sin hacer nada más.',
-        media: { src: 'img/12-invierno.jpg', alt: 'Este invierno' },
+        media: { src: 'img/13-invierno.jpg', alt: 'Salidas de este invierno' },
       },
       {
         texto: 'Hace un año, este mismo mes, yo todavía te estaba conociendo y me moría de ganas de verte. Hoy ya no me acuerdo cómo era el mundo antes de vos.',
-        media: { src: 'img/13-nosotros.jpg', alt: 'Nosotros ahora' },
+        media: { src: 'img/14-nosotros.jpg', alt: 'Nosotros ahora' },
       },
     ],
     cita: 'Dimos la vuelta entera al año y volvimos al mismo frío, pero juntos.',
@@ -256,12 +257,12 @@ const HISTORIA = [
       'Te amo.',
     ],
     firma: 'Adriel',
-    media: [{ src: 'img/final.jpg', alt: 'Nosotros hoy' }],
+    media: [{ src: 'img/15-final.jpg', alt: 'Nosotros hoy', completa: true }],
   },
 
   /* ---------------------------------------------------------
      8 · EL REGALO — se abre al tocarlo
-     La foto va en img/14-regalo.jpg (si todavía no está,
+     La foto va en img/16-regalo.jpg (si todavía no está,
      se muestra el placeholder y no rompe nada).
      Para apagar esta escena, agregá   oculta: true,
      --------------------------------------------------------- */
@@ -276,7 +277,7 @@ const HISTORIA = [
     entrada: 'Aquella noche en Traslasierras nos quedamos mirando el cielo desde abajo, los dos. Estudiás para llegar hasta ahí arriba, así que se me ocurrió que ya es hora de que lo veas desde el otro lado.',
     // ✏️ el remate, aparece al final y más grande
     remate: 'Vas a volar una avioneta. Vos a los mandos, y yo abajo mirándote, como aquella noche.',
-    media: [{ src: 'img/14-regalo.jpg', alt: 'El regalo' }],
+    media: [{ src: 'img/16-regalo.jpg', alt: 'El regalo' }],
   },
 ];
 

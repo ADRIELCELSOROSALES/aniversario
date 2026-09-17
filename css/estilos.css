@@ -71,7 +71,7 @@ body {
   position: fixed; inset: 0; z-index: 1; pointer-events: none;
 }
 
-main { position: relative; z-index: 2; }
+main { position: relative; z-index: 2; overflow-x: clip; }
 
 /* ---------- tipografía ---------- */
 h1, h2, .cita, .carta p {
@@ -157,6 +157,22 @@ h1, h2, .cita, .carta p {
   text-align: center;
 }
 
+/* las frases largas sin foto: cuerpo más contenido para que no
+   se conviertan en un muro de letras enormes */
+.momento--largo .momento__texto {
+  max-width: 32ch;
+  font-size: clamp(1.35rem, 1rem + 1.5vw, 2.15rem);
+  line-height: 1.34;
+}
+
+/* cada palabra entra por su cuenta */
+.palabra {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.45em);
+  will-change: transform, opacity;
+}
+
 /* ---------- media ---------- */
 .marco {
   position: relative;
@@ -170,10 +186,28 @@ h1, h2, .cita, .carta p {
   box-shadow: 0 30px 60px -30px rgba(0,0,0,.55);
 }
 .marco--ancho { aspect-ratio: 3 / 2; max-width: min(100%, calc(66vh * 3 / 2)); }
+
+/* fotos apaisadas: el ancho manda, el alto lo pone su propia proporción */
+.marco--apaisado { max-width: 100%; max-height: none; }
 .marco img, .marco video {
   width: 100%; height: 100%; object-fit: cover;
   will-change: transform;
 }
+
+/* el svg que sólo guarda formas de recorte, no ocupa lugar */
+.formas { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* foto recortada en corazón */
+.marco--corazon {
+  aspect-ratio: 1 / 1;
+  max-width: min(100%, 60vh);
+  max-height: 60vh;
+  clip-path: url(#recorte-corazon);
+  background: none;
+  box-shadow: none;       /* una sombra rectangular delataría el recorte */
+  border-radius: 0;
+}
+.marco--corazon img { object-position: center 64%; }
 
 /* velo de color para que la foto pertenezca a su estación */
 .marco::after {
@@ -181,6 +215,36 @@ h1, h2, .cita, .carta p {
   background: var(--acento);
   mix-blend-mode: soft-light;
   opacity: .12;
+}
+
+/* una foto marcada como completa se ve entera sí o sí: 'contain' no
+   recorta nunca, aunque el marco quede con otra proporción */
+.marco--completa img,
+.marco--completa video { object-fit: contain; }
+.marco--completa { background: none; }
+
+/* ---------- foto realzada ---------- */
+.realce { position: relative; isolation: isolate; }
+.realce::before {
+  content: '';
+  position: absolute; inset: -14% -11%;
+  z-index: 0;
+  border-radius: 50%;
+  background: radial-gradient(58% 58% at 50% 50%,
+              color-mix(in oklab, var(--acento) 62%, transparent) 0%,
+              color-mix(in oklab, var(--acento) 28%, transparent) 42%,
+              transparent 72%);
+  filter: blur(26px);
+  animation: respirar 5.5s ease-in-out infinite;
+}
+.realce .marco { position: relative; z-index: 1; }
+.marco--realce {
+  box-shadow: 0 34px 70px -34px rgba(0,0,0,.62),
+              0 0 0 1px color-mix(in oklab, var(--acento) 42%, transparent);
+}
+@keyframes respirar {
+  0%, 100% { opacity: .5;  transform: scale(1); }
+  50%      { opacity: .85; transform: scale(1.045); }
 }
 
 /* ---------- cita de cierre de estación ---------- */
@@ -193,6 +257,9 @@ h1, h2, .cita, .carta p {
   text-align: center;
   text-wrap: balance;
 }
+
+/* foto que acompaña la frase de cierre de una estación */
+.cita__foto { margin: clamp(2.5rem, 7vh, 4rem) auto 0; max-width: 44rem; }
 
 /* ---------- portada ---------- */
 .portada { align-items: center; text-align: center; }
@@ -281,6 +348,9 @@ h1, h2, .cita, .carta p {
   align-items: center; text-align: center;
   overflow: hidden;
   min-height: 100svh;
+  /* aire extra abajo: así la foto queda dentro del tramo oscuro y no
+     justo donde el fondo empieza a virar al verano */
+  padding-bottom: clamp(7rem, 20vh, 14rem);
 }
 .estrellas__cielo {
   position: absolute; inset: 0; z-index: 0;
@@ -303,7 +373,19 @@ h1, h2, .cita, .carta p {
   line-height: 1.45;
   text-wrap: pretty;
 }
-.estrellas .marco { margin: clamp(2.5rem, 7vh, 4rem) auto 0; max-width: 34rem; }
+.estrellas .marco {
+  margin: clamp(2.5rem, 7vh, 4rem) auto 0;
+  max-width: 38rem;
+  background: none;
+  box-shadow: none;
+  /* los bordes se desvanecen para que la foto se funda con el cielo
+     de atrás, en vez de quedar como un rectángulo pegado encima */
+  -webkit-mask-image: radial-gradient(120% 120% at 50% 45%, #000 52%, transparent 88%);
+  mask-image: radial-gradient(120% 120% at 50% 45%, #000 52%, transparent 88%);
+}
+/* el velo de color le baja el contraste justo a la foto más oscura */
+.estrellas .marco::after { display: none; }
+.estrellas .marco img { filter: contrast(1.12) saturate(1.15) brightness(1.06); }
 
 /* el horizonte serrano, apenas insinuado */
 .estrellas::after {
@@ -538,6 +620,7 @@ h1, h2, .cita, .carta p {
     font-size: 1.42rem;
     line-height: 1.34;
   }
+  .momento--largo .momento__texto { max-width: none; font-size: 1.26rem; line-height: 1.42; }
 
   .cita {
     max-width: 20ch;
@@ -589,6 +672,10 @@ h1, h2, .cita, .carta p {
 
   .firma { margin-top: 2.5rem; }
 
+  /* el halo no puede asomar por los costados en pantalla angosta */
+  .realce { overflow-x: clip; }
+  .realce::before { inset: -9% -3%; }
+
   .regalo__abierto { padding-block: 1.5rem; }
 }
 
@@ -598,5 +685,7 @@ h1, h2, .cita, .carta p {
   .atmosfera { transition: background .9s ease; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
   .revelar { opacity: 1; transform: none; }
+  .palabra { opacity: 1; transform: none; }
+  .realce::before { animation: none; opacity: .65; }
   #particulas { display: none; }
 }

@@ -78,6 +78,7 @@ function crearMedia(media, estacion, ancho = false) {
   const marco = document.createElement('div');
   marco.className = 'marco' + (ancho ? ' marco--ancho' : '');
   if (!media) return null;
+  if (media.forma === 'corazon') marco.classList.add('marco--corazon');
 
   const esVideo = /\.(mp4|webm|mov)$/i.test(media.src);
   const el = document.createElement(esVideo ? 'video' : 'img');
@@ -92,10 +93,54 @@ function crearMedia(media, estacion, ancho = false) {
     el.loading = 'lazy';
     el.decoding = 'async';
     el.addEventListener('error', () => placeholder(el, estacion), { once: true });
+    // el marco se adapta a la foto: una apaisada en un marco vertical
+    // perdería casi la mitad de la imagen recortada a los costados
+    const ajustarMarco = () => {
+      if (el.dataset.placeholder || !el.naturalWidth) return;
+      if (marco.classList.contains('marco--corazon')) return;   // el corazón manda su propia forma
+      const proporcion = el.naturalWidth / el.naturalHeight;
+      // una foto que se muestra entera lleva la proporción exacta, sin topes
+      if (marco.classList.contains('marco--completa')) {
+        marco.style.aspectRatio = proporcion.toFixed(4);
+        return;
+      }
+      if (proporcion > 1.05) {
+        marco.classList.add('marco--apaisado');
+        marco.style.aspectRatio = Math.min(proporcion, 1.62).toFixed(3);
+      } else if (proporcion < 0.72) {
+        marco.style.aspectRatio = Math.max(proporcion, 0.66).toFixed(3);
+      }
+    };
+    el.addEventListener('load', ajustarMarco, { once: true });
     el.src = media.src;
+    // si venía en caché ya está completa y el evento de arriba no dispara
+    if (el.complete && el.naturalWidth) ajustarMarco();
   }
   marco.appendChild(el);
+
+  // una foto puede pedir realce: va envuelta, con un halo detrás
+  if (media.completa || media.realce) marco.classList.add('marco--completa');
+  if (media.realce) {
+    marco.classList.add('marco--realce');
+    const halo = document.createElement('div');
+    halo.className = 'realce';
+    halo.appendChild(marco);
+    return halo;
+  }
   return marco;
+}
+
+/* parte el texto en palabras, para poder revelarlas de a una */
+function enPalabras(nodo, texto) {
+  texto.split(/(\s+)/).forEach((trozo) => {
+    if (!trozo) return;
+    if (/^\s+$/.test(trozo)) { nodo.appendChild(document.createTextNode(trozo)); return; }
+    const w = document.createElement('span');
+    w.className = 'palabra';
+    w.textContent = trozo;
+    nodo.appendChild(w);
+  });
+  return nodo;
 }
 
 const el = (tag, clase, texto) => {
@@ -149,21 +194,31 @@ function escenaEstacion(d) {
 
   const lista = el('div', 'momentos');
   (d.momentos || []).forEach((m) => {
-    const art = el('article', 'momento' + (m.media ? '' : ' momento--solo'));
-    const txt = el('p', 'momento__texto revelar', m.texto);
-    const marco = crearMedia(m.media, d.estacion);
-    if (marco) {
+    if (m.media) {
+      const art = el('article', 'momento');
+      art.appendChild(el('p', 'momento__texto revelar', m.texto));
+      const marco = crearMedia(m.media, d.estacion);
       marco.classList.add('momento__media', 'revelar');
-      art.appendChild(txt);
       art.appendChild(marco);
-    } else {
-      art.appendChild(txt);
+      lista.appendChild(art);
+      return;
     }
+    // sin foto: el texto es el protagonista y se revela de a una palabra.
+    // Los largos usan un cuerpo más contenido para no volverse un muro.
+    const largo = m.texto.length > 150;
+    const art = el('article', 'momento momento--solo' + (largo ? ' momento--largo' : ''));
+    const txt = el('p', 'momento__texto momento__frase');
+    enPalabras(txt, m.texto);
+    art.appendChild(txt);
     lista.appendChild(art);
   });
   s.appendChild(lista);
 
-  if (d.cita) s.appendChild(el('p', 'cita revelar', d.cita));
+  if (d.cita) {
+    s.appendChild(el('p', 'cita revelar', d.cita));
+    const marcoCita = crearMedia(d.citaMedia, d.estacion, true);
+    if (marcoCita) { marcoCita.classList.add('cita__foto', 'revelar'); s.appendChild(marcoCita); }
+  }
   return s;
 }
 
