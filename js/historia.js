@@ -19,6 +19,26 @@ const PAREJA = {
   aniversario: '2026-09-20',
 };
 
+/* ============================================================
+   ✏️ LA MÚSICA
+   Poné tus .mp3 en la carpeta audio/ y listalos acá abajo.
+   Suenan una tras otra y, cuando termina la última, vuelve a
+   empezar por la primera. Nada de esto depende del scroll.
+
+   Si dejás listada una canción que todavía no subiste, se saltea
+   sola y sigue con la que viene: no rompe nada.
+
+   El orden de esta lista es el orden en que suenan.
+   ============================================================ */
+const MUSICA = [
+  'audio/1.mp3',
+  'audio/2.mp3',
+  'audio/3.mp3',
+  'audio/4.mp3',
+  'audio/5.mp3',
+  'audio/6.mp3',
+];
+
 const HISTORIA = [
 
   /* ---------------------------------------------------------
@@ -75,7 +95,6 @@ const HISTORIA = [
       },
     ],
     cita: 'Todo lo que vino después empezó acá, en invierno, sin que nos diéramos cuenta.',
-    cancion: 'audio/invierno.mp3',
   },
 
   /* ---------------------------------------------------------
@@ -89,7 +108,6 @@ const HISTORIA = [
     subtitulo: 'Tres meses después de conocerte en persona, me animé.',
     entrada: 'Llené todo de velas, cociné unas pastas a la bolognesa, puse decoración por todos lados y te regalé unas flores. Te pregunté si querías ser mi novia y me dijiste que sí. Un día antes de la primavera, como si el mundo hubiese estado esperando que lo dijéramos para empezar a florecer.',
     media: [{ src: 'img/04-20-septiembre.jpg', alt: 'El 20 de septiembre de 2025' }],
-    cancion: null,
   },
 
   /* ---------------------------------------------------------
@@ -117,7 +135,6 @@ const HISTORIA = [
       },
     ],
     cita: 'Nunca una primavera se pareció tanto a su nombre.',
-    cancion: 'audio/primavera.mp3',
   },
 
   /* ---------------------------------------------------------
@@ -136,7 +153,6 @@ const HISTORIA = [
         media: { src: 'img/07-traslasierras.jpg', alt: 'Villa Dolores, Traslasierras' },
       },
     ],
-    cancion: 'audio/verano.mp3',
   },
 
   /* ---------------------------------------------------------
@@ -151,7 +167,6 @@ const HISTORIA = [
     titulo: 'La noche que vimos las estrellas',
     entrada: 'Lejos de la ciudad, sin una sola luz alrededor, el cielo se abrió entero. Nos quedamos mirándolo en silencio, sintiéndonos más cerca del cielo y más cerca el uno del otro. Vos que estudiás para mandar cosas allá arriba, y yo mirándote a vos en vez de mirar las estrellas.',
     media: [{ src: 'img/08-estrellas.jpg', alt: 'La noche de las estrellas' }],
-    cancion: 'audio/verano.mp3',
   },
 
   /* ---------------------------------------------------------
@@ -177,7 +192,6 @@ const HISTORIA = [
       },
     ],
     cita: 'Si tuviera que elegir un verano para vivir siempre, elijo este.',
-    cancion: 'audio/verano.mp3',
   },
 
   /* ---------------------------------------------------------
@@ -201,7 +215,6 @@ const HISTORIA = [
       },
     ],
     cita: 'Ese otoño aprendimos a cuidarnos también en los detalles chiquitos.',
-    cancion: 'audio/otono.mp3',
   },
 
   /* ---------------------------------------------------------
@@ -225,7 +238,6 @@ const HISTORIA = [
       },
     ],
     cita: 'Dimos la vuelta entera al año y volvimos al mismo frío, pero juntos.',
-    cancion: 'audio/invierno-calido.mp3',
   },
 
   /* ---------------------------------------------------------
@@ -245,7 +257,6 @@ const HISTORIA = [
     ],
     firma: 'Adriel',
     media: [{ src: 'img/final.jpg', alt: 'Nosotros hoy' }],
-    cancion: 'audio/final.mp3',
   },
 
   /* ---------------------------------------------------------
@@ -266,9 +277,8 @@ const HISTORIA = [
     // ✏️ el remate, aparece al final y más grande
     remate: 'Vas a volar una avioneta. Vos a los mandos, y yo abajo mirándote, como aquella noche.',
     media: [{ src: 'img/14-regalo.jpg', alt: 'El regalo' }],
-    cancion: 'audio/final.mp3',
   },
 ];
 
 /* ⚠️ No borres esta línea: es lo que conecta este archivo con el resto. */
-export { PAREJA, HISTORIA };
+export { PAREJA, HISTORIA, MUSICA };

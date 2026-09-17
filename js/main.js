@@ -2,10 +2,10 @@
    MAIN.JS — scroll suave, transiciones de estación, revelados
    ============================================================ */
 
-import { HISTORIA } from './historia.js';
+import { HISTORIA, MUSICA } from './historia.js';
 import { construir } from './escenas.js';
 import { SistemaParticulas } from './particulas.js';
-import { Musica } from './audio.js';
+import { Musica, poff } from './audio.js';
 
 const { gsap, ScrollTrigger, MotionPathPlugin, Lenis } = window;
 const reducirMovimiento = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -41,7 +41,7 @@ const particulas = reducirMovimiento
   ? null
   : new SistemaParticulas(document.getElementById('particulas'));
 
-const musica = new Musica(document.querySelector('.musica'));
+const musica = new Musica(document.querySelector('.musica'), MUSICA);
 
 /* ---------------------------------------------------------
    4 · cada escena cambia la paleta, las partículas y la canción
@@ -54,7 +54,6 @@ function entrarEn(seccion) {
   if (!d) return;
   cuerpo.dataset.estacion = d.estacion;
   if (particulas) particulas.cambiar(d.estacion);
-  musica.poner(d.cancion || null);
 }
 
 escenas.forEach((seccion) => {
@@ -364,6 +363,7 @@ if (regalo) {
     if (latido) latido.kill();
 
     if (reducirMovimiento) {
+      poff();
       cerrado.hidden = true;
       abierto.hidden = false;
       ScrollTrigger.refresh();
@@ -382,7 +382,8 @@ if (regalo) {
     // 1 · se desata el moño
     t.to(lazos, { scale: 1.15, opacity: 0, duration: 0.45, ease: 'power2.in', transformOrigin: '50% 40%' });
 
-    // 2 · la tapa salta y se va
+    // 2 · la tapa salta y se va, con su poff
+    t.add(() => poff());
     t.to(tapa, { y: -130, rotation: -14, opacity: 0, duration: 0.7, ease: 'power2.out', transformOrigin: '50% 50%' }, '-=0.15');
 
     // 3 · sale la luz de adentro

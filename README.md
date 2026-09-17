@@ -72,12 +72,33 @@ del cielo dibujado.
 
 ## Poner la música
 
-Un `.mp3` por estación, en la carpeta `audio/`:
-`invierno.mp3`, `primavera.mp3`, `verano.mp3`, `otono.mp3`, `invierno-calido.mp3`, `final.mp3`
+Copiá tus `.mp3` en la carpeta `audio/` y listalos en `js/historia.js`, arriba de todo,
+en la lista `MUSICA`:
 
-Arranca en silencio (los navegadores bloquean el audio automático) y se activa con el
-botón de abajo a la izquierda. Al cambiar de estación la canción hace un fundido cruzado.
-El volumen se ajusta en `js/audio.js`, primera línea.
+```js
+const MUSICA = [
+  'audio/1.mp3',
+  'audio/2.mp3',
+  ...
+];
+```
+
+Suenan **una tras otra, en bucle**: cuando termina la última vuelve a empezar por la
+primera. No dependen del scroll ni de la estación. El orden de la lista es el orden en
+que suenan, y podés poner las que quieras (dos, seis, quince).
+
+Si dejás listada una canción que todavía no subiste, **se saltea sola** y sigue con la
+que viene. Así podés ir completando de a poco sin que nada se rompa.
+
+Arranca en silencio —los navegadores bloquean el audio automático— y se activa con el
+botón de abajo a la izquierda. Entre tema y tema hay un fundido suave. El volumen se
+ajusta en `js/audio.js`, primera línea.
+
+### El "poff" del regalo
+
+Cuando se abre la caja suena un *poff*. **No es un archivo**: se genera en el momento con
+Web Audio, mezclando un golpe grave que cae de tono con un soplido de papel. No tenés que
+subir nada y suena aunque la música esté apagada.
 
 ## Verlo en tu compu antes de subirlo
 
