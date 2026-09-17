@@ -672,10 +672,9 @@ h1, h2, .cita, .carta p {
   .rueda, .musica { transition: opacity .45s var(--curva); }
 
   /* también van a sangre las fotos de las escenas centradas */
-  .umbral .marco,
-  .estrellas .marco,
-  .final__foto,
-  .regalo__foto {
+  .umbral .marco:not(.marco--corazon),
+  .final__foto:not(.marco--completa),
+  .regalo__foto:not(.marco--completa) {
     width: calc(100% + var(--gutter) * 2);
     max-width: none;
     margin-inline: calc(var(--gutter) * -1);
@@ -691,6 +690,29 @@ h1, h2, .cita, .carta p {
   .contador__n { font-variant-numeric: lining-nums tabular-nums; }
 
   .firma { margin-top: 2.5rem; }
+
+  /* Una foto ambiental gana yendo de borde a borde. Un collage o una
+     foto realzada, no: son objetos con su propio marco y necesitan
+     margen para leerse como tales. */
+  .marco--completa,
+  .realce .marco {
+    width: 100%;
+    margin-inline: auto;
+    border-radius: 3px;
+  }
+  .final__foto, .regalo__foto { width: 100%; margin-inline: auto; }
+
+  /* la rama no se pega al borde ni ocupa todo el ancho */
+  .rama { width: 86%; margin-block: -.25rem 1.5rem; }
+
+  /* el umbral y las estrellas: menos líneas partidas */
+  .umbral__texto,
+  .estrellas__parrafo { max-width: 30ch; font-size: 1.14rem; line-height: 1.46; }
+  .umbral__titulo { font-size: clamp(2.8rem, 15vw, 4rem); }
+  .estrellas__titulo { font-size: clamp(2.2rem, 11vw, 3rem); }
+
+  /* el cierre respira entre la firma y los números */
+  .contador { margin-top: clamp(3rem, 8vh, 4rem); }
 
   /* el halo no puede asomar por los costados en pantalla angosta */
   .realce { overflow-x: clip; }
@@ -708,4 +730,30 @@ h1, h2, .cita, .carta p {
   .palabra { opacity: 1; transform: none; }
   .realce::before { animation: none; opacity: .65; }
   #particulas { display: none; }
+}
+
+/* ============================================================
+   El corazón en pantalla chica: es un dije, no un cartel.
+   Va en su propio bloque al final para que ninguna regla de
+   ancho anterior le gane.
+   ============================================================ */
+@media (max-width: 700px) {
+  /* .umbral .marco le gana a .marco--corazon por especificidad,
+     así que el selector tiene que pesar lo mismo */
+  .umbral .marco--corazon {
+    width: 76vw;
+    max-width: 76vw;
+    margin-inline: auto;
+  }
+}
+
+/* La foto de la noche de estrellas tiene los bordes difuminados para
+   fundirse con el cielo dibujado. A sangre ese difuminado queda fuera
+   de pantalla y vuelve a ser un rectángulo pegado encima. */
+@media (max-width: 700px) {
+  .estrellas .marco {
+    width: 100%;
+    max-width: 100%;
+    margin-inline: auto;
+  }
 }
